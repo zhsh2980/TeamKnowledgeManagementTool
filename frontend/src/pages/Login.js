@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Card, message, Tabs } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { authAPI } from '../services/api';
+import { authService } from '../services/api';
 import { saveAuth } from '../utils/auth';
 
 const Login = () => {
@@ -13,9 +13,9 @@ const Login = () => {
   const handleLogin = async (values) => {
     setLoading(true);
     try {
-      const response = await authAPI.login(values);
-      if (response.data.success) {
-        const { token, user } = response.data.data;
+      const response = await authService.login(values);
+      if (response.success) {
+        const { token, user } = response.data;
         saveAuth(token, user);
         message.success('登录成功！');
         navigate('/');
@@ -30,8 +30,8 @@ const Login = () => {
   const handleRegister = async (values) => {
     setLoading(true);
     try {
-      const response = await authAPI.register(values);
-      if (response.data.success) {
+      const response = await authService.register(values);
+      if (response.success) {
         message.success('注册成功！请登录');
         setActiveTab('login');
       }

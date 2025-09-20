@@ -44,6 +44,9 @@ const UploadDocument = () => {
       'application/msword',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       'text/plain',
+      'text/markdown',
+      'text/x-markdown',
+      'application/x-markdown',
       'application/vnd.ms-excel',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       'application/vnd.ms-powerpoint',
@@ -136,7 +139,7 @@ const UploadDocument = () => {
               </p>
               <p className="ant-upload-text">点击或拖拽文件到此区域上传</p>
               <p className="ant-upload-hint">
-                支持PDF、Word、Excel、PPT、TXT、图片等格式，文件大小不超过10MB
+                支持PDF、Word、Excel、PPT、TXT、Markdown、图片等格式，文件大小不超过10MB
               </p>
             </Dragger>
           </Form.Item>

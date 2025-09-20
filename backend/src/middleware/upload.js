@@ -29,6 +29,9 @@ const fileFilter = (req, file, cb) => {
     'application/msword',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     'text/plain',
+    'text/markdown',
+    'text/x-markdown',
+    'application/x-markdown',
     'image/jpeg',
     'image/png',
     'image/gif'

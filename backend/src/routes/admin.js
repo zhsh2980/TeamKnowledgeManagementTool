@@ -34,11 +34,14 @@ router.get('/users', authMiddleware, adminMiddleware, (req, res) => {
           });
         }
 
-        // 获取用户列表
+        // 获取用户列表（包含文档数统计）
         db.all(
-          `SELECT id, username, email, role, created_at
-           FROM users
-           ORDER BY created_at DESC
+          `SELECT u.id, u.username, u.email, u.role, u.created_at,
+                  COUNT(d.id) as document_count
+           FROM users u
+           LEFT JOIN documents d ON u.id = d.upload_user_id
+           GROUP BY u.id
+           ORDER BY u.created_at DESC
            LIMIT ? OFFSET ?`,
           [parseInt(limit), parseInt(offset)],
           (err, users) => {
@@ -126,12 +129,15 @@ router.get('/active-users', authMiddleware, adminMiddleware, (req, res) => {
 
     db.all(
       `SELECT u.id, u.username, u.email,
-              COUNT(d.id) as document_count,
-              COALESCE(SUM(d.download_count), 0) as total_downloads
+              COUNT(DISTINCT d.id) as document_count,
+              COALESCE(SUM(d.download_count), 0) as total_downloads,
+              COUNT(DISTINCT l.id) as login_count
        FROM users u
        LEFT JOIN documents d ON u.id = d.upload_user_id
+       LEFT JOIN login_logs l ON u.id = l.user_id
+         AND datetime(l.login_time) > datetime('now', '-7 days')
        GROUP BY u.id
-       ORDER BY document_count DESC
+       ORDER BY (document_count + login_count) DESC
        LIMIT ?`,
       [parseInt(limit)],
       (err, users) => {

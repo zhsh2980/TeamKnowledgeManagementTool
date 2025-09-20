@@ -19,7 +19,7 @@ router.post('/register', async (req, res) => {
 
     // 检查用户是否已存在
     db.get(
-      'SELECT id FROM users WHERE email = ? OR username = ?',
+      'SELECT username, email FROM users WHERE email = ? OR username = ?',
       [email, username],
       async (err, row) => {
         if (err) {
@@ -31,10 +31,18 @@ router.post('/register', async (req, res) => {
         }
 
         if (row) {
-          return res.status(400).json({
-            success: false,
-            message: '用户名或邮箱已存在'
-          });
+          if (row.email === email) {
+            return res.status(400).json({
+              success: false,
+              message: '邮箱已被注册'
+            });
+          }
+          if (row.username === username) {
+            return res.status(400).json({
+              success: false,
+              message: '用户名已被占用'
+            });
+          }
         }
 
         // 加密密码
@@ -85,14 +93,14 @@ router.post('/login', (req, res) => {
     if (!email || !password) {
       return res.status(400).json({
         success: false,
-        message: '邮箱和密码不能为空'
+        message: '用户名/邮箱和密码不能为空'
       });
     }
 
-    // 查找用户
+    // 查找用户（支持用户名或邮箱登录）
     db.get(
-      'SELECT * FROM users WHERE email = ?',
-      [email],
+      'SELECT * FROM users WHERE email = ? OR username = ?',
+      [email, email],
       async (err, user) => {
         if (err) {
           console.error('数据库查询错误:', err);
@@ -105,7 +113,7 @@ router.post('/login', (req, res) => {
         if (!user) {
           return res.status(401).json({
             success: false,
-            message: '邮箱或密码错误'
+            message: '用户名/邮箱或密码错误'
           });
         }
 
@@ -114,7 +122,7 @@ router.post('/login', (req, res) => {
         if (!isValidPassword) {
           return res.status(401).json({
             success: false,
-            message: '邮箱或密码错误'
+            message: '用户名/邮箱或密码错误'
           });
         }
 
@@ -125,6 +133,20 @@ router.post('/login', (req, res) => {
           email: user.email,
           role: user.role
         });
+
+        // 记录登录日志
+        const ip = req.ip || req.connection.remoteAddress || '未知';
+        const userAgent = req.get('User-Agent') || '未知';
+
+        db.run(
+          'INSERT INTO login_logs (user_id, ip_address, user_agent) VALUES (?, ?, ?)',
+          [user.id, ip, userAgent],
+          (logErr) => {
+            if (logErr) {
+              console.warn('记录登录日志失败:', logErr);
+            }
+          }
+        );
 
         res.json({
           success: true,

@@ -14,6 +14,9 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
+    // 修正文件名编码问题
+    file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
+
     // 生成唯一文件名：时间戳 + 随机数 + 原始扩展名
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     const ext = path.extname(file.originalname);
@@ -23,6 +26,9 @@ const storage = multer.diskStorage({
 
 // 文件过滤器
 const fileFilter = (req, file, cb) => {
+  // 修正文件名编码问题
+  file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
+
   // 允许的文件类型
   const allowedTypes = [
     'application/pdf',

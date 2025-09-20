@@ -219,7 +219,16 @@ router.get('/:id/download', authMiddleware, (req, res) => {
           });
         }
 
-        res.download(filePath, document.file_name);
+        // 设置正确的中文文件名编码
+        const fileName = document.file_name;
+        const encodedFileName = encodeURIComponent(fileName);
+
+        res.setHeader('Content-Type', 'application/octet-stream');
+        res.setHeader('Content-Disposition', `attachment; filename="${encodedFileName}"; filename*=UTF-8''${encodedFileName}`);
+
+        // 发送文件
+        const fileStream = fs.createReadStream(filePath);
+        fileStream.pipe(res);
       }
     );
   } catch (error) {

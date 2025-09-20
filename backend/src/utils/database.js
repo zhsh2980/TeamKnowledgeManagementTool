@@ -35,8 +35,34 @@ const initDatabase = () => {
         upload_user_id INTEGER NOT NULL,
         is_public BOOLEAN DEFAULT 0,
         tags TEXT,
+        download_count INTEGER DEFAULT 0,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (upload_user_id) REFERENCES users(id)
+      )
+    `);
+
+    // 创建搜索日志表
+    db.run(`
+      CREATE TABLE IF NOT EXISTS search_logs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        keyword VARCHAR(255),
+        tags TEXT,
+        result_count INTEGER DEFAULT 0,
+        searched_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+      )
+    `);
+
+    // 创建登录记录表
+    db.run(`
+      CREATE TABLE IF NOT EXISTS login_logs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        ip_address VARCHAR(45),
+        user_agent TEXT,
+        login_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
       )
     `);
 
@@ -46,6 +72,10 @@ const initDatabase = () => {
     db.run(`CREATE INDEX IF NOT EXISTS idx_documents_upload_user ON documents(upload_user_id)`);
     db.run(`CREATE INDEX IF NOT EXISTS idx_documents_public ON documents(is_public)`);
     db.run(`CREATE INDEX IF NOT EXISTS idx_documents_created_at ON documents(created_at)`);
+    db.run(`CREATE INDEX IF NOT EXISTS idx_search_logs_user ON search_logs(user_id)`);
+    db.run(`CREATE INDEX IF NOT EXISTS idx_search_logs_searched_at ON search_logs(searched_at)`);
+    db.run(`CREATE INDEX IF NOT EXISTS idx_login_logs_user ON login_logs(user_id)`);
+    db.run(`CREATE INDEX IF NOT EXISTS idx_login_logs_time ON login_logs(login_time)`);
 
     console.log('✅ 数据库表和索引创建成功');
   });

@@ -171,7 +171,7 @@ router.get('/popular-documents', authMiddleware, adminMiddleware, (req, res) => 
     const { limit = 10 } = req.query;
 
     db.all(
-      `SELECT d.id, d.title, d.download_count, d.created_at,
+      `SELECT d.id, d.title, d.download_count, d.created_at, d.file_size,
               u.username as upload_username
        FROM documents d
        LEFT JOIN users u ON d.upload_user_id = u.id

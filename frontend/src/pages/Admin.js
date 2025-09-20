@@ -23,7 +23,8 @@ import {
   TeamOutlined,
   BarChartOutlined,
   CrownOutlined,
-  SafetyCertificateOutlined
+  SafetyCertificateOutlined,
+  DownOutlined
 } from '@ant-design/icons';
 import { adminService } from '../services/api';
 import { formatDate, formatFileSize } from '../utils/format';
@@ -154,36 +155,39 @@ const AdminDashboard = () => {
       title: '角色',
       dataIndex: 'role',
       key: 'role',
-      width: 120,
+      width: 140,
       render: (role, record) => {
         const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
 
         // 不能修改自己的角色
         if (currentUser.id === record.id) {
           return role === 'admin' ? (
-            <Tag icon={<CrownOutlined />} color="gold" style={{ width: '100px', textAlign: 'center' }}>管理员</Tag>
+            <Tag icon={<CrownOutlined />} color="gold" style={{ width: '120px', textAlign: 'center' }}>管理员</Tag>
           ) : (
-            <Tag icon={<UserOutlined />} color="blue" style={{ width: '100px', textAlign: 'center' }}>普通用户</Tag>
+            <Tag icon={<UserOutlined />} color="blue" style={{ width: '120px', textAlign: 'center' }}>普通用户</Tag>
           );
         }
 
         return (
           <Select
             value={role}
-            style={{ width: '100px' }}
+            style={{ width: '120px' }}
             onChange={(value) => handleRoleChange(record.id, value)}
-            suffixIcon={null}
+            suffixIcon={<DownOutlined style={{ color: '#1890ff', pointerEvents: 'none' }} />}
+            dropdownStyle={{ minWidth: '140px' }}
+            placeholder="选择角色"
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
           >
             <Option value="user">
               <Space size={4}>
-                <UserOutlined />
-                <span>普通用户</span>
+                <UserOutlined style={{ color: '#1890ff' }} />
+                <span style={{ color: '#000' }}>普通用户</span>
               </Space>
             </Option>
             <Option value="admin">
               <Space size={4}>
-                <CrownOutlined />
-                <span>管理员</span>
+                <CrownOutlined style={{ color: '#faad14' }} />
+                <span style={{ color: '#000' }}>管理员</span>
               </Space>
             </Option>
           </Select>
@@ -320,15 +324,15 @@ const AdminDashboard = () => {
                       description={
                         <Space>
                           <Text type="secondary">
-                            {doc.upload_username}
+                            {doc.upload_username || '未知用户'}
                           </Text>
                           <Text type="secondary">
-                            {formatFileSize(doc.file_size)}
+                            {doc.file_size ? formatFileSize(doc.file_size) : '未知大小'}
                           </Text>
                         </Space>
                       }
                     />
-                    <Tag color="blue">{doc.download_count} 次下载</Tag>
+                    <Tag color="blue">{doc.download_count || 0} 次下载</Tag>
                   </List.Item>
                 )}
               />

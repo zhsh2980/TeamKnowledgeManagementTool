@@ -8,10 +8,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 常用开发命令
 
-### 🚀 自动化开发工作流（推荐）
+### ⚡ Claude Code开发规则
+**重要：每次修改完代码后，必须执行以下命令重启服务：**
 ```bash
-# 简化的两步工作流：
-
 # 步骤1: 启动服务 + 自动打开浏览器（推荐）
 npm run start-services
 
@@ -23,6 +22,25 @@ npm run start-services
 # 5. 脚本退出，服务继续后台运行
 
 # 步骤2: 代码质量检查
+npm run lint:all
+```
+这确保修改的代码能够正确加载和测试。
+
+### 🚀 自动化开发工作流（推荐）
+```bash
+# 简化的两步工作流：
+
+# 启动服务 + 自动打开浏览器（推荐）
+npm run start-services
+
+# 自动完成：
+# 1. 清理现有服务（端口3000/3001）
+# 2. 以分离模式启动前后端服务
+# 3. 等待服务就绪
+# 4. 自动打开浏览器页面（前端+后端）
+# 5. 脚本退出，服务继续后台运行
+
+# 代码质量检查
 npm run lint:all
 
 # 执行前后端代码检查
@@ -227,19 +245,19 @@ frontend/
 - 提交信息末尾包含Claude Code标识：
   ```
   🤖 Generated with [Claude Code](https://claude.ai/code)
-
+  
   Co-Authored-By: Claude <noreply@anthropic.com>
   ```
 - 示例提交信息：
   ```
   fix: 修复管理员仪表板显示问题
-
+  
   - 添加login_logs表记录用户登录日志
   - 修复活跃用户登录次数显示为0的问题
   - 修复用户管理文档数显示为0的问题
-
+  
   🤖 Generated with [Claude Code](https://claude.ai/code)
-
+  
   Co-Authored-By: Claude <noreply@anthropic.com>
   ```
 

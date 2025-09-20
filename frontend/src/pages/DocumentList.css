@@ -1,0 +1,16 @@
+.document-list-container {
+  padding: 24px;
+}
+
+.document-list-container .ant-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.document-list-container .ant-table {
+  margin-top: 16px;
+}
+
+.document-list-container .ant-tag {
+  margin: 2px;
+}

@@ -1,0 +1,22 @@
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.register-card {
+  width: 100%;
+  max-width: 400px;
+  margin: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.register-card .ant-card-head {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1890ff;
+}

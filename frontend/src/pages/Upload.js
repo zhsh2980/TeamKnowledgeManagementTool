@@ -56,7 +56,12 @@ const UploadDocument = () => {
       'image/jpg'
     ];
 
-    if (!allowedTypes.includes(file.type)) {
+    // 获取文件扩展名
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+    const allowedExtensions = ['pdf', 'doc', 'docx', 'txt', 'md', 'xls', 'xlsx', 'ppt', 'pptx', 'png', 'jpg', 'jpeg', 'gif'];
+
+    // 检查文件类型或扩展名
+    if (!allowedTypes.includes(file.type) && !allowedExtensions.includes(fileExtension)) {
       message.error('不支持的文件类型！');
       return false;
     }

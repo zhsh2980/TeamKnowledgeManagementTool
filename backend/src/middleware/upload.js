@@ -32,12 +32,21 @@ const fileFilter = (req, file, cb) => {
     'text/markdown',
     'text/x-markdown',
     'application/x-markdown',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
     'image/jpeg',
     'image/png',
     'image/gif'
   ];
 
-  if (allowedTypes.includes(file.mimetype)) {
+  // 获取文件扩展名
+  const ext = path.extname(file.originalname).toLowerCase();
+  const allowedExtensions = ['.pdf', '.doc', '.docx', '.txt', '.md', '.xls', '.xlsx', '.ppt', '.pptx', '.png', '.jpg', '.jpeg', '.gif'];
+
+  // 允许通过MIME类型或文件扩展名
+  if (allowedTypes.includes(file.mimetype) || allowedExtensions.includes(ext)) {
     cb(null, true);
   } else {
     cb(new Error('不支持的文件类型'), false);

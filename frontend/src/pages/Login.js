@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Form, Input, Button, Card, message, Tabs } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/api';
 import { saveAuth } from '../utils/auth';
+import './Login.css';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('login');
   const navigate = useNavigate();
+  const [loginForm] = Form.useForm();
+  const [registerForm] = Form.useForm();
 
   const handleLogin = async (values) => {
     setLoading(true);
@@ -22,6 +25,10 @@ const Login = () => {
       }
     } catch (error) {
       message.error(error.response?.data?.message || '登录失败');
+      // 登录失败时只清空密码字段，保留用户名
+      loginForm.setFieldsValue({
+        password: ''
+      });
     } finally {
       setLoading(false);
     }
@@ -34,9 +41,16 @@ const Login = () => {
       if (response.success) {
         message.success('注册成功！请登录');
         setActiveTab('login');
+        // 注册成功后清空注册表单
+        registerForm.resetFields();
       }
     } catch (error) {
       message.error(error.response?.data?.message || '注册失败');
+      // 注册失败时只清空密码相关字段，保留用户名和邮箱
+      registerForm.setFieldsValue({
+        password: '',
+        confirmPassword: ''
+      });
     } finally {
       setLoading(false);
     }
@@ -44,21 +58,22 @@ const Login = () => {
 
   const LoginForm = () => (
     <Form
+      form={loginForm}
       name="login"
       onFinish={handleLogin}
       autoComplete="off"
       size="large"
+      className="login-form"
     >
       <Form.Item
         name="email"
         rules={[
-          { required: true, message: '请输入邮箱!' },
-          { type: 'email', message: '请输入有效的邮箱地址!' }
+          { required: true, message: '请输入用户名或邮箱!' }
         ]}
       >
         <Input
-          prefix={<MailOutlined />}
-          placeholder="邮箱"
+          prefix={<UserOutlined />}
+          placeholder="用户名 / 邮箱"
         />
       </Form.Item>
 
@@ -77,7 +92,7 @@ const Login = () => {
           type="primary"
           htmlType="submit"
           loading={loading}
-          style={{ width: '100%' }}
+          className="login-submit-btn"
         >
           登录
         </Button>
@@ -87,10 +102,12 @@ const Login = () => {
 
   const RegisterForm = () => (
     <Form
+      form={registerForm}
       name="register"
       onFinish={handleRegister}
       autoComplete="off"
       size="large"
+      className="login-form"
     >
       <Form.Item
         name="username"
@@ -157,7 +174,7 @@ const Login = () => {
           type="primary"
           htmlType="submit"
           loading={loading}
-          style={{ width: '100%' }}
+          className="login-submit-btn"
         >
           注册
         </Button>
@@ -179,41 +196,16 @@ const Login = () => {
   ];
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-    }}>
-      <Card
-        style={{
-          width: '400px',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
-        }}
-        bodyStyle={{ padding: '32px' }}
-      >
-        <div style={{
-          textAlign: 'center',
-          marginBottom: '24px'
-        }}>
-          <h1 style={{
-            fontSize: '24px',
-            fontWeight: 'bold',
-            color: '#1890ff',
-            margin: 0
-          }}>
-            团队知识库
-          </h1>
-          <p style={{
-            color: '#666',
-            marginTop: '8px'
-          }}>
-            欢迎使用团队知识管理系统
-          </p>
+    <div className="login-container">
+      <Card className="login-card" bordered={false}>
+        <div className="login-header">
+          <div className="login-logo"></div>
+          <h1 className="login-title">团队知识库</h1>
+          <p className="login-subtitle">欢迎使用专业的团队知识管理系统</p>
         </div>
 
         <Tabs
+          className="login-tabs"
           activeKey={activeTab}
           onChange={setActiveTab}
           items={tabItems}

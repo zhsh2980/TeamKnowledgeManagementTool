@@ -1,0 +1,283 @@
+/* 商业级管理员页面样式 */
+.admin-container {
+  padding: 0;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+  padding: 24px 32px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  color: white;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+}
+
+.admin-header h2 {
+  color: white !important;
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-header .anticon {
+  font-size: 32px;
+}
+
+.statistics-row {
+  margin-bottom: 32px;
+}
+
+.statistics-row .ant-col {
+  padding: 0 8px;
+}
+
+.admin-card {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.admin-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+}
+
+.admin-card .ant-card-head {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.admin-card .ant-card-head-title {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 18px;
+}
+
+.admin-card .ant-card-extra {
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* 统计卡片 */
+.admin-statistic-card {
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.admin-statistic-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--stat-color, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+}
+
+.admin-statistic-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.admin-statistic-card.stat-users::before {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+}
+
+.admin-statistic-card.stat-documents::before {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.admin-statistic-card.stat-searches::before {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.admin-statistic-card.stat-downloads::before {
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+}
+
+.admin-statistic-card .ant-statistic-title {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.admin-statistic-card .ant-statistic-content {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+/* 用户列表样式 */
+.admin-user-table .ant-table {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.admin-user-table .ant-table-thead > tr > th {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border: none;
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.admin-user-table .ant-table-tbody > tr > td {
+  border: none;
+  padding: 16px;
+  vertical-align: middle;
+}
+
+.admin-user-table .ant-table-tbody > tr:hover > td {
+  background: rgba(102, 126, 234, 0.02);
+}
+
+.admin-user-table .ant-avatar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+/* 活跃用户列表 */
+.admin-active-users .ant-list-item {
+  border: none;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.admin-active-users .ant-list-item:last-child {
+  border-bottom: none;
+}
+
+.admin-active-users .ant-avatar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.admin-active-users .ant-progress {
+  margin-top: 4px;
+}
+
+.admin-active-users .ant-progress-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* 热门文档列表 */
+.admin-popular-docs .ant-list-item {
+  border: none;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.admin-popular-docs .ant-list-item:last-child {
+  border-bottom: none;
+}
+
+.admin-popular-docs .anticon-file {
+  color: #667eea;
+  font-size: 24px;
+}
+
+.admin-popular-docs .ant-tag {
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 500;
+}
+
+/* 权限不足页面 */
+.admin-forbidden {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 120px 24px;
+  color: #64748b;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.admin-forbidden .anticon {
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.admin-forbidden h3 {
+  color: #1e293b !important;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .admin-header {
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  .admin-header h2 {
+    font-size: 24px;
+  }
+
+  .statistics-row {
+    margin-bottom: 24px;
+  }
+
+  .statistics-row .ant-col {
+    padding: 0 4px;
+    margin-bottom: 16px;
+  }
+
+  .admin-statistic-card .ant-statistic-content {
+    font-size: 24px;
+  }
+}
+
+/* 暗色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .admin-card {
+    background: rgba(30, 41, 59, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .admin-card .ant-card-head {
+    background: rgba(102, 126, 234, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .admin-card .ant-card-head-title {
+    color: #e2e8f0;
+  }
+
+  .admin-statistic-card .ant-statistic-title {
+    color: #94a3b8;
+  }
+
+  .admin-forbidden {
+    background: rgba(30, 41, 59, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #94a3b8;
+  }
+
+  .admin-forbidden h3 {
+    color: #e2e8f0 !important;
+  }
+}

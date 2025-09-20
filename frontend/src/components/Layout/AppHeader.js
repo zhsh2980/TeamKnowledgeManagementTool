@@ -14,6 +14,8 @@ const AppHeader = () => {
   const handleLogout = () => {
     clearAuth();
     message.success('退出登录成功');
+    // 触发自定义事件通知App组件更新认证状态
+    window.dispatchEvent(new CustomEvent('authStateChanged'));
     navigate('/login');
   };
 

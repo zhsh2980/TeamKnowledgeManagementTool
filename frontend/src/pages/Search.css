@@ -1,0 +1,42 @@
+.search-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.search-header {
+  margin-bottom: 24px;
+}
+
+.search-results {
+  min-height: 500px;
+}
+
+.search-sidebar {
+  position: sticky;
+  top: 24px;
+}
+
+.history-item {
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 8px;
+}
+
+.history-item:hover {
+  background-color: #f0f0f0;
+}
+
+.history-item:last-child {
+  margin-bottom: 0;
+}
+
+/* 响应式设计 */
+@media (max-width: 992px) {
+  .search-sidebar {
+    position: static;
+    margin-bottom: 16px;
+  }
+}

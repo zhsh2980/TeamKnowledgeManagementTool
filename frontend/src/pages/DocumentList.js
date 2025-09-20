@@ -74,21 +74,22 @@ const DocumentList = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 下载文档
-  const handleDownload = async (document) => {
+  const handleDownload = async (doc) => {
     try {
-      const response = await documentService.download(document.id);
-      // 创建下载链接
-      const url = window.URL.createObjectURL(new Blob([response]));
+      const blob = await documentService.download(doc.id);
+      const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', document.file_name);
+      link.setAttribute('download', doc.file_name);
+      link.style.display = 'none';
       document.body.appendChild(link);
       link.click();
-      link.remove();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
       message.success('下载成功');
     } catch (error) {
       console.error('下载错误:', error);
-      message.error('下载失败');
+      message.error(error.response?.data?.message || '下载失败');
     }
   };
 

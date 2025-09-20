@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, Spin } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import 'antd/dist/reset.css';
 
@@ -8,15 +8,54 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import DocumentList from './pages/DocumentList';
 import Upload from './pages/Upload';
+import Search from './pages/Search';
+import Admin from './pages/Admin';
 import MainLayout from './components/Layout/MainLayout';
 import PrivateRoute from './components/PrivateRoute';
 import { isAuthenticated } from './utils/auth';
 
-// 页面组件（临时占位）
-const Search = () => <div>搜索页面</div>;
-const Admin = () => <div>管理员页面</div>;
-
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    // 初始化时检查认证状态
+    const checkAuth = () => {
+      setAuthenticated(isAuthenticated());
+      setIsLoading(false);
+    };
+
+    checkAuth();
+
+    // 监听localStorage变化，当退出登录时立即更新状态
+    const handleStorageChange = () => {
+      setAuthenticated(isAuthenticated());
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    // 也监听自定义事件，用于同窗口内的状态更新
+    window.addEventListener('authStateChanged', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('authStateChanged', handleStorageChange);
+    };
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh'
+      }}>
+        <Spin size="large" />
+      </div>
+    );
+  }
+
   return (
     <ConfigProvider locale={zhCN}>
       <Router>
@@ -25,14 +64,14 @@ function App() {
           <Route
             path="/login"
             element={
-              isAuthenticated() ? <Navigate to="/" replace /> : <Login />
+              authenticated ? <Navigate to="/" replace /> : <Login />
             }
           />
 
           <Route
             path="/register"
             element={
-              isAuthenticated() ? <Navigate to="/" replace /> : <Register />
+              authenticated ? <Navigate to="/" replace /> : <Register />
             }
           />
 

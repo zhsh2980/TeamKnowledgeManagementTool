@@ -67,12 +67,18 @@ const UploadDocument = () => {
     }
 
     setFileList([file]);
+
+    // 自动填充文档标题（去除扩展名）
+    const fileNameWithoutExt = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
+    form.setFieldsValue({ title: fileNameWithoutExt });
+
     return false; // 阻止自动上传
   };
 
   // 处理文件移除
   const onRemove = () => {
     setFileList([]);
+    form.setFieldsValue({ title: '' }); // 清空标题
   };
 
   // 添加标签

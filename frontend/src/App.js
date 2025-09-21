@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ConfigProvider, Spin } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import 'antd/dist/reset.css';
+import './styles/global.css';
+import { lightTheme } from './styles/theme';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -57,7 +59,7 @@ function App() {
   }
 
   return (
-    <ConfigProvider locale={zhCN}>
+    <ConfigProvider locale={zhCN} theme={lightTheme}>
       <Router>
         <Routes>
           {/* 公开路由 */}

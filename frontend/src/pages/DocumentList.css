@@ -1,16 +1,357 @@
+/* 文档列表页面样式 */
+@import '../styles/variables.css';
+
+/* 容器样式 */
 .document-list-container {
-  padding: 24px;
+  padding: 0;
 }
 
-.document-list-container .ant-card {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+/* 头部搜索栏样式 */
+.document-list-header {
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-.document-list-container .ant-table {
-  margin-top: 16px;
+.document-search .ant-input-search-button {
+  background: var(--primary-gradient) !important;
+  border: none !important;
 }
 
-.document-list-container .ant-tag {
-  margin: 2px;
+.document-search .ant-input-search-button:hover {
+  opacity: 0.9;
+}
+
+/* 选中的标签样式 */
+.selected-tags {
+  padding: 12px;
+  background: var(--bg-tertiary);
+  border-radius: var(--border-radius-md);
+}
+
+/* 内容区域 */
+.document-list-content {
+  min-height: 400px;
+}
+
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  background: white;
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* 空状态容器 */
+.empty-container {
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* 网格视图样式 */
+.document-grid {
+  margin-bottom: 24px;
+}
+
+/* 文档卡片样式 */
+.document-card {
+  height: 100%;
+  transition: all var(--duration-fast) var(--ease-in-out);
+  border-radius: var(--border-radius-lg) !important;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.document-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* 卡片封面样式 */
+.document-card-cover {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  position: relative;
+}
+
+.document-card-cover .anticon {
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.document-card:hover .document-card-cover .anticon {
+  transform: scale(1.1);
+}
+
+/* 私有标记 */
+.private-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.private-badge .ant-badge-count {
+  background: var(--warning-color) !important;
+  color: white !important;
+  font-weight: 500;
+  padding: 0 8px;
+  height: 22px;
+  line-height: 22px;
+  border-radius: 11px;
+}
+
+/* 卡片标题 */
+.document-card-title {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+/* 卡片内容 */
+.document-card-content {
+  padding-top: 8px;
+}
+
+.document-description {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 12px !important;
+  min-height: 40px;
+}
+
+/* 文档标签 */
+.document-tags {
+  margin-bottom: 12px;
+  min-height: 28px;
+}
+
+.document-tags .ant-tag {
+  margin-bottom: 4px;
+  border-radius: 12px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+/* 文档元信息 */
+.document-meta {
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.meta-item .anticon {
+  color: var(--text-tertiary);
+  font-size: 12px;
+}
+
+.meta-text {
+  font-size: 12px;
+}
+
+.meta-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.meta-size {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  background: var(--bg-tertiary);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.meta-downloads {
+  font-size: 12px;
+  color: var(--success-color);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* 卡片操作按钮 */
+.document-card .ant-card-actions {
+  background: var(--bg-tertiary);
+  border-top: 1px solid var(--border-color);
+}
+
+.document-card .ant-card-actions > li {
+  margin: 8px 0;
+}
+
+.document-card .ant-card-actions > li > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.document-card .ant-card-actions button {
+  color: var(--text-secondary);
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.document-card .ant-card-actions button:hover {
+  color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+/* 分页容器 */
+.pagination-container {
+  margin-top: 24px;
+}
+
+.pagination-container .ant-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* 列表视图样式 */
+.document-table-container {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.document-table .ant-table {
+  font-size: 14px;
+}
+
+.document-table .ant-table-thead > tr > th {
+  background: var(--bg-tertiary) !important;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.document-table .ant-table-tbody > tr > td {
+  padding: 12px 16px;
+}
+
+.document-table .ant-table-tbody > tr:hover > td {
+  background: var(--bg-hover) !important;
+}
+
+/* 表格中的标签 */
+.table-tags .ant-tag {
+  margin-bottom: 4px;
+  border-radius: 12px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+/* 视图切换器样式 */
+.ant-segmented {
+  background: var(--bg-tertiary);
+  padding: 2px;
+}
+
+.ant-segmented .ant-segmented-item-selected {
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .document-list-header .ant-col {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .document-search {
+    margin-bottom: 12px;
+  }
+
+  .document-card-cover {
+    height: 100px;
+  }
+
+  .document-card-cover .anticon {
+    font-size: 28px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .document-grid .ant-col {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .document-table {
+    font-size: 12px;
+  }
+
+  .document-table .ant-table-thead > tr > th,
+  .document-table .ant-table-tbody > tr > td {
+    padding: 8px;
+  }
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.document-card {
+  animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+
+.document-grid .ant-col:nth-child(1) .document-card { animation-delay: 0ms; }
+.document-grid .ant-col:nth-child(2) .document-card { animation-delay: 50ms; }
+.document-grid .ant-col:nth-child(3) .document-card { animation-delay: 100ms; }
+.document-grid .ant-col:nth-child(4) .document-card { animation-delay: 150ms; }
+.document-grid .ant-col:nth-child(5) .document-card { animation-delay: 200ms; }
+.document-grid .ant-col:nth-child(6) .document-card { animation-delay: 250ms; }
+.document-grid .ant-col:nth-child(7) .document-card { animation-delay: 300ms; }
+.document-grid .ant-col:nth-child(8) .document-card { animation-delay: 350ms; }
+
+/* 悬浮预览样式（未来功能预留） */
+.document-preview-popover {
+  max-width: 400px;
+}
+
+.document-preview-popover .ant-popover-inner-content {
+  padding: 16px;
+}
+
+.preview-content {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.preview-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.preview-content::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+}
+
+.preview-content::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+  border-radius: 3px;
+}
+
+.preview-content::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-400);
 }

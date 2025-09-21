@@ -2,6 +2,25 @@
   padding: 24px;
   max-width: 800px;
   margin: 0 auto;
+  position: relative;
+  min-height: calc(100vh - 72px);
+}
+
+/* 页面顶部背景 */
+.upload-container::before {
+  content: '';
+  position: fixed;
+  top: 72px;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(135deg,
+    rgba(99, 102, 241, 0.05) 0%,
+    rgba(168, 85, 247, 0.05) 25%,
+    rgba(236, 72, 153, 0.03) 50%,
+    rgba(99, 102, 241, 0.05) 100%);
+  z-index: -1;
+  border-radius: 0 0 24px 24px;
 }
 
 .upload-card {

@@ -131,7 +131,7 @@ router.get('/tags', authMiddleware, (req, res) => {
         const hotTags = Object.entries(tagCount)
           .sort((a, b) => b[1] - a[1])
           .slice(0, parseInt(limit))
-          .map(([tag, count]) => ({ tag, count }));
+          .map(([tag, count]) => ({ name: tag, count }));
 
         res.json({
           success: true,

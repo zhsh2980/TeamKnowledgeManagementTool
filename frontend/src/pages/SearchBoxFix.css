@@ -1,0 +1,97 @@
+/* 搜索框样式修复 - 专门修复双边框问题 */
+
+/* 移除AutoComplete外层的边框 */
+.search-autocomplete.ant-select-auto-complete .ant-select-selector {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+/* 移除AutoComplete聚焦时的边框 */
+.search-autocomplete.ant-select-focused .ant-select-selector,
+.search-autocomplete .ant-select-selector:hover,
+.search-autocomplete .ant-select-selector:focus {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* 确保只有Input.Search组件显示边框 */
+.search-input.ant-input-search-large {
+  width: 100%;
+}
+
+/* 修复Input.Search内部输入框的样式 */
+.search-input.ant-input-search-large .ant-input-affix-wrapper {
+  border-radius: 8px 0 0 8px !important;
+  border: 1px solid #d9d9d9 !important;
+  border-right: none !important;
+  height: 48px !important;
+  background: white !important;
+  font-size: 16px !important;
+  padding: 4px 15px !important;
+}
+
+/* 聚焦时的样式 */
+.search-input.ant-input-search-large .ant-input-affix-wrapper:hover {
+  border-color: #667eea !important;
+}
+
+.search-input.ant-input-search-large .ant-input-affix-wrapper-focused {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.15) !important;
+}
+
+/* 搜索按钮样式 */
+.search-input.ant-input-search-large .ant-input-group-addon {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.search-input.ant-input-search-large .ant-input-search-button {
+  height: 48px !important;
+  border-radius: 0 8px 8px 0 !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border: none !important;
+  font-size: 16px !important;
+  min-width: 100px !important;
+}
+
+.search-input.ant-input-search-large .ant-input-search-button:hover {
+  background: linear-gradient(135deg, #5a67d8 0%, #6b4298 100%) !important;
+}
+
+/* 输入框内部样式 */
+.search-input.ant-input-search-large .ant-input {
+  border: none !important;
+  box-shadow: none !important;
+  font-size: 16px !important;
+  background: transparent !important;
+}
+
+.search-input.ant-input-search-large .ant-input:focus {
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* 整体组合样式 */
+.search-input.ant-input-search-large .ant-input-group {
+  display: inline-flex !important;
+  width: 100%;
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
+  transition: box-shadow 0.3s ease;
+}
+
+.search-input.ant-input-search-large .ant-input-group:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* 确保AutoComplete的dropdown正常显示 */
+.ant-select-dropdown.search-dropdown {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid #e2e8f0 !important;
+}

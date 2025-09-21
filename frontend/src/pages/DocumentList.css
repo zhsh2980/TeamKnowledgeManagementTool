@@ -12,6 +12,89 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
+/* 现代化搜索容器 */
+.modern-search-container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+}
+
+/* 搜索输入框 */
+.modern-search-input {
+  flex: 1;
+  border-radius: 12px !important;
+  border: 2px solid #e1e5e9 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  background: white !important;
+}
+
+.modern-search-input:hover {
+  border-color: #b8c4ce !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+.modern-search-input:focus,
+.modern-search-input.ant-input-focused {
+  border-color: #0F766E !important;
+  box-shadow: 0 4px 16px rgba(15, 118, 110, 0.2) !important;
+}
+
+.modern-search-input .ant-input {
+  border: none !important;
+  box-shadow: none !important;
+  padding: 12px 16px !important;
+  font-size: 15px !important;
+  background: transparent !important;
+}
+
+.modern-search-input .ant-input::placeholder {
+  color: #8c8c8c;
+  font-weight: 400;
+}
+
+/* 搜索前缀图标 */
+.search-prefix-icon {
+  color: #8c8c8c;
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+/* 现代化搜索按钮 */
+.modern-search-button {
+  height: 48px !important;
+  padding: 0 24px !important;
+  border-radius: 12px !important;
+  border: none !important;
+  background: var(--primary-gradient) !important;
+  box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3) !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-width: 100px !important;
+  white-space: nowrap !important;
+}
+
+.modern-search-button:hover {
+  background: linear-gradient(135deg, #14B8A6 0%, #0F766E 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(15, 118, 110, 0.4) !important;
+}
+
+.modern-search-button:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(15, 118, 110, 0.3) !important;
+}
+
+.modern-search-button .anticon {
+  font-size: 16px !important;
+}
+
+/* 兼容旧样式（备用） */
 .document-search .ant-input-search-button {
   background: var(--primary-gradient) !important;
   border: none !important;
@@ -270,6 +353,22 @@
     max-width: 100%;
   }
 
+  /* 移动端搜索容器 */
+  .modern-search-container {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .modern-search-input {
+    width: 100%;
+  }
+
+  .modern-search-button {
+    width: 100%;
+    justify-content: center !important;
+    min-width: auto !important;
+  }
+
   .document-search {
     margin-bottom: 12px;
   }
@@ -289,6 +388,25 @@
     max-width: 100%;
   }
 
+  /* 小屏幕搜索优化 */
+  .modern-search-button {
+    height: 44px !important;
+    font-size: 14px !important;
+  }
+
+  .modern-search-input .ant-input {
+    font-size: 14px !important;
+    padding: 10px 14px !important;
+  }
+
+  .modern-search-input {
+    border-radius: 10px !important;
+  }
+
+  .modern-search-button {
+    border-radius: 10px !important;
+  }
+
   .document-table {
     font-size: 12px;
   }
@@ -296,6 +414,53 @@
   .document-table .ant-table-thead > tr > th,
   .document-table .ant-table-tbody > tr > td {
     padding: 8px;
+  }
+}
+
+/* 平板横屏优化 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .modern-search-container {
+    gap: 10px;
+  }
+
+  .modern-search-button {
+    min-width: 90px !important;
+    padding: 0 20px !important;
+  }
+}
+
+/* 大屏幕优化 */
+@media (min-width: 1200px) {
+  .modern-search-container {
+    gap: 16px;
+  }
+
+  .modern-search-button {
+    min-width: 120px !important;
+    padding: 0 28px !important;
+  }
+}
+
+/* 减少动画的用户偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .modern-search-input,
+  .modern-search-button {
+    transition: none !important;
+  }
+
+  .modern-search-button:hover {
+    transform: none !important;
+  }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+  .modern-search-input {
+    border-width: 3px !important;
+  }
+
+  .modern-search-button {
+    border: 2px solid #0F766E !important;
   }
 }
 

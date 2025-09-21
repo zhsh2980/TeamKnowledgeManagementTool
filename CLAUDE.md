@@ -9,6 +9,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## 常用开发命令
 
 ### ⚡ Claude Code开发规则
+
+关于subAgent的使用：
+
+* 本项目的前端代码改动请使用 frontend-developer
+* 本项目的后端代码改动请使用 backend-architect
+
+* 本项目的ui设计和改动请使用 ui-ux-designer
+
 **重要：每次修改完代码后，必须执行以下命令重启服务：**
 ```bash
 # 步骤1: 启动服务 + 自动打开浏览器（推荐）

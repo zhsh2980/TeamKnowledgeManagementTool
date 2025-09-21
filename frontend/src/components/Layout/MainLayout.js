@@ -29,6 +29,8 @@ const { Header, Sider, Content, Footer } = Layout;
 const MainLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
   const [commandPaletteVisible, setCommandPaletteVisible] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(5);
+  const [isUrgentNotification, setIsUrgentNotification] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const currentUser = getCurrentUser();
@@ -198,15 +200,40 @@ const MainLayout = ({ children }) => {
               <ThemeSwitcher />
 
               {/* 通知图标 */}
-              <Tooltip title="通知中心">
-                <Badge count={5} size="small">
-                  <Button
-                    type="text"
-                    shape="circle"
-                    icon={<BellOutlined />}
-                    className="header-icon-btn"
-                  />
-                </Badge>
+              <Tooltip
+                title={`通知中心${notificationCount > 0 ? ` (${notificationCount}条新消息)` : ''}`}
+                placement="bottom"
+              >
+                <div className="notification-container">
+                  <Badge
+                    count={notificationCount}
+                    size="small"
+                    className={`notification-badge ${isUrgentNotification ? 'urgent' : ''}`}
+                    offset={[-6, 6]}
+                    overflowCount={99}
+                  >
+                    <Button
+                      type="text"
+                      shape="circle"
+                      icon={<BellOutlined />}
+                      className="header-icon-btn notification-btn"
+                      aria-label={`通知中心${notificationCount > 0 ? `, ${notificationCount}条未读消息` : ', 无未读消息'}`}
+                      aria-describedby="notification-description"
+                      onClick={() => {
+                        // 点击通知时的处理逻辑
+                        console.log('打开通知中心');
+                        // 可以在这里添加打开通知面板的逻辑
+                        // 演示：点击后重置通知数量
+                        setNotificationCount(0);
+                        setIsUrgentNotification(false);
+                      }}
+                    />
+                    {/* 屏幕阅读器友好的描述 */}
+                    <span id="notification-description" className="sr-only">
+                      {isUrgentNotification ? '包含紧急通知' : '常规通知'}
+                    </span>
+                  </Badge>
+                </div>
               </Tooltip>
 
               {/* 用户下拉菜单 */}
@@ -234,6 +261,37 @@ const MainLayout = ({ children }) => {
                       label: '命令面板',
                       extra: '⌘K',
                       onClick: () => setCommandPaletteVisible(true)
+                    },
+                    {
+                      key: 'notification-demo',
+                      icon: <BellOutlined />,
+                      label: '通知演示',
+                      children: [
+                        {
+                          key: 'normal-notification',
+                          label: '普通通知 (3条)',
+                          onClick: () => {
+                            setNotificationCount(3);
+                            setIsUrgentNotification(false);
+                          }
+                        },
+                        {
+                          key: 'urgent-notification',
+                          label: '紧急通知 (8条)',
+                          onClick: () => {
+                            setNotificationCount(8);
+                            setIsUrgentNotification(true);
+                          }
+                        },
+                        {
+                          key: 'clear-notification',
+                          label: '清空通知',
+                          onClick: () => {
+                            setNotificationCount(0);
+                            setIsUrgentNotification(false);
+                          }
+                        }
+                      ]
                     },
                     {
                       key: 'settings',
@@ -277,7 +335,7 @@ const MainLayout = ({ children }) => {
         {/* 底部 */}
         <Footer className="layout-footer">
           <div className="footer-content">
-            <span>团队知识库管理系统 ©2024</span>
+            <span>团队知识库管理系统 ©2025</span>
             <span className="footer-divider">|</span>
             <span>Powered by Professional Team</span>
           </div>

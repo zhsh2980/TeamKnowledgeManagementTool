@@ -446,17 +446,30 @@ const DocumentList = () => {
         <Row gutter={[16, 16]} align="middle">
           <Col flex="auto">
             <Space direction="vertical" style={{ width: '100%' }} size={16}>
-              <Row gutter={16}>
-                <Col span={14}>
-                  <Search
-                    placeholder="搜索文档标题、描述或标签"
-                    onSearch={handleSearch}
-                    enterButton={<SearchOutlined />}
-                    size="large"
-                    className="document-search"
-                  />
+              <Row gutter={[16, 12]} align="middle">
+                <Col xs={24} sm={24} md={16} lg={14}>
+                  <div className="modern-search-container">
+                    <Input
+                      placeholder="搜索文档标题、描述或标签..."
+                      value={searchKeyword}
+                      onChange={(e) => setSearchKeyword(e.target.value)}
+                      onPressEnter={(e) => handleSearch(e.target.value)}
+                      size="large"
+                      className="modern-search-input"
+                      prefix={<SearchOutlined className="search-prefix-icon" />}
+                    />
+                    <Button
+                      type="primary"
+                      size="large"
+                      icon={<SearchOutlined />}
+                      className="modern-search-button"
+                      onClick={() => handleSearch(searchKeyword)}
+                    >
+                      搜索
+                    </Button>
+                  </div>
                 </Col>
-                <Col span={10}>
+                <Col xs={24} sm={24} md={8} lg={10}>
                   <Space style={{ width: '100%', justifyContent: 'flex-end' }}>
                     <Segmented
                       value={viewMode}

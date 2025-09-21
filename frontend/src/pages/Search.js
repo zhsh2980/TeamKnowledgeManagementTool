@@ -20,7 +20,9 @@ import {
   Skeleton,
   AutoComplete,
   Divider,
-  Avatar
+  Avatar,
+  Menu,
+  Popover
 } from 'antd';
 import {
   SearchOutlined,
@@ -44,7 +46,13 @@ import {
   FileMarkdownOutlined,
   FileTextOutlined,
   ThunderboltOutlined,
-  RiseOutlined
+  RiseOutlined,
+  SortAscendingOutlined,
+  SortDescendingOutlined,
+  ShareAltOutlined,
+  MoreOutlined,
+  ClearOutlined,
+  HighlightOutlined
 } from '@ant-design/icons';
 import { searchService, documentService } from '../services/api';
 import { formatFileSize, formatDate } from '../utils/format';
@@ -80,7 +88,36 @@ const SearchPage = () => {
     pageSize: 12,
     total: 0
   });
+  const [sortBy, setSortBy] = useState('relevance');
+  const [sortOrder, setSortOrder] = useState('desc');
+  const [activeFiltersCount, setActiveFiltersCount] = useState(0);
   const searchInputRef = useRef(null);
+
+  // 高亮搜索关键词
+  const highlightKeywords = (text, keywords) => {
+    if (!text || !keywords) return text;
+
+    const keywordArray = keywords.split(' ').filter(k => k.trim());
+    if (keywordArray.length === 0) return text;
+
+    let highlightedText = text;
+    keywordArray.forEach(keyword => {
+      const regex = new RegExp(`(${keyword})`, 'gi');
+      highlightedText = highlightedText.replace(regex, '<mark class="search-highlight">$1</mark>');
+    });
+
+    return <span dangerouslySetInnerHTML={{ __html: highlightedText }} />;
+  };
+
+  // 计算活跃过滤器数量
+  useEffect(() => {
+    let count = 0;
+    if (filters.fileType) count++;
+    if (filters.dateRange && filters.dateRange.length === 2) count++;
+    if (filters.uploader) count++;
+    if (selectedTags.length > 0) count++;
+    setActiveFiltersCount(count);
+  }, [filters, selectedTags]);
 
   // 文件类型图标映射
   const getFileIcon = (fileName) => {
@@ -168,6 +205,8 @@ const SearchPage = () => {
         tags: selectedTags.join(','),
         page,
         limit: pagination.pageSize,
+        sortBy: hasSearched ? sortBy : 'download_count',
+        sortOrder: hasSearched ? sortOrder : 'desc',
         ...filters
       };
 
@@ -229,6 +268,45 @@ const SearchPage = () => {
     setShowPreview(true);
   };
 
+  // 清除所有过滤器
+  const clearAllFilters = () => {
+    setSelectedTags([]);
+    setFilters({ fileType: '', dateRange: null, uploader: '' });
+    setSortBy('relevance');
+    setSortOrder('desc');
+    if (searchKeyword) {
+      handleSearch(searchKeyword);
+    }
+  };
+
+  // 排序选项
+  const sortOptions = [
+    { key: 'relevance', label: '相关性', icon: <HighlightOutlined /> },
+    { key: 'created_at', label: '创建时间', icon: <CalendarOutlined /> },
+    { key: 'download_count', label: '下载次数', icon: <DownloadOutlined /> },
+    { key: 'file_size', label: '文件大小', icon: <FolderOutlined /> },
+    { key: 'title', label: '标题', icon: <FileOutlined /> }
+  ];
+
+  // 快速操作菜单
+  const getQuickActionMenu = (doc) => (
+    <Menu>
+      <Menu.Item key="preview" icon={<EyeOutlined />} onClick={() => handlePreview(doc)}>
+        预览文档
+      </Menu.Item>
+      <Menu.Item key="download" icon={<DownloadOutlined />} onClick={() => handleDownload(doc)}>
+        下载文档
+      </Menu.Item>
+      <Menu.Item key="share" icon={<ShareAltOutlined />}>
+        分享链接
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="info" icon={<FileOutlined />}>
+        文档信息
+      </Menu.Item>
+    </Menu>
+  );
+
   // 渲染搜索建议
   const renderSearchSuggestions = () => {
     return suggestions.map((item, index) => ({
@@ -247,26 +325,67 @@ const SearchPage = () => {
     <Card
       className="document-card"
       hoverable
+      tabIndex={0}
+      role="article"
+      aria-label={`文档: ${item.title}, 上传者: ${item.upload_username}, ${formatFileSize(item.file_size)}`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handlePreview(item);
+        }
+      }}
       cover={
         <div className="document-card-cover">
           {getFileIcon(item.file_name)}
           <div className="document-card-actions">
-            <Tooltip title="预览">
+            <Tooltip title="预览文档">
               <Button
                 type="primary"
                 shape="circle"
                 icon={<EyeOutlined />}
-                onClick={() => handlePreview(item)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePreview(item);
+                }}
+                className="action-btn preview-btn"
+                size="large"
+                aria-label={`预览文档: ${item.title}`}
               />
             </Tooltip>
-            <Tooltip title="下载">
+            <Tooltip title="下载文档">
               <Button
                 type="primary"
                 shape="circle"
                 icon={<DownloadOutlined />}
-                onClick={() => handleDownload(item)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDownload(item);
+                }}
+                className="action-btn download-btn"
+                size="large"
+                aria-label={`下载文档: ${item.title}`}
               />
             </Tooltip>
+            <Dropdown
+              overlay={getQuickActionMenu(item)}
+              trigger={['click']}
+              placement="bottomRight"
+            >
+              <Button
+                type="primary"
+                shape="circle"
+                icon={<MoreOutlined />}
+                onClick={(e) => e.stopPropagation()}
+                className="action-btn more-btn"
+                size="large"
+                aria-label={`更多操作: ${item.title}`}
+                aria-haspopup="true"
+              />
+            </Dropdown>
+          </div>
+          {/* 文件类型标签 */}
+          <div className="file-type-badge">
+            {item.file_name ? item.file_name.split('.').pop().toUpperCase() : 'FILE'}
           </div>
         </div>
       }
@@ -274,7 +393,9 @@ const SearchPage = () => {
       <Card.Meta
         title={
           <Tooltip title={item.title}>
-            <div className="document-title">{item.title}</div>
+            <div className="document-title">
+              {highlightKeywords(item.title, searchKeyword)}
+            </div>
           </Tooltip>
         }
         description={
@@ -283,34 +404,59 @@ const SearchPage = () => {
               ellipsis={{ rows: 2 }}
               className="document-description"
             >
-              {item.description || '暂无描述'}
+              {highlightKeywords(item.description || '暂无描述', searchKeyword)}
             </Paragraph>
             <Space direction="vertical" size="small" className="document-info">
-              <Space size="small">
+              <Space size="small" className="info-row">
                 <UserOutlined />
-                <Text type="secondary">{item.upload_username}</Text>
+                <Text type="secondary" className="info-text">{item.upload_username}</Text>
                 <Divider type="vertical" />
                 <CalendarOutlined />
-                <Text type="secondary">{formatDate(item.created_at)}</Text>
+                <Text type="secondary" className="info-text">{formatDate(item.created_at)}</Text>
               </Space>
-              <Space size="small">
+              <Space size="small" className="info-row">
                 <FolderOutlined />
-                <Text type="secondary">{formatFileSize(item.file_size)}</Text>
+                <Text type="secondary" className="info-text">{formatFileSize(item.file_size)}</Text>
                 <Divider type="vertical" />
                 <DownloadOutlined />
-                <Text type="secondary">{item.download_count} 次</Text>
+                <Text type="secondary" className="info-text">{item.download_count} 次下载</Text>
+                {item.download_count > 100 && (
+                  <Badge
+                    count="热门"
+                    style={{ backgroundColor: '#ff4d4f', fontSize: '10px', height: '16px', lineHeight: '16px' }}
+                  />
+                )}
               </Space>
               {item.tags && (
                 <div className="document-tags">
-                  {item.tags.split(',').map(tag => (
+                  {item.tags.split(',').slice(0, 3).map(tag => (
                     <Tag
                       key={tag}
                       className="document-tag"
                       color="purple"
+                      tabIndex={0}
+                      role="button"
+                      aria-label={`搜索标签: ${tag.trim()}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleTagSelect(tag.trim());
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleTagSelect(tag.trim());
+                        }
+                      }}
                     >
                       {tag.trim()}
                     </Tag>
                   ))}
+                  {item.tags.split(',').length > 3 && (
+                    <Tag className="document-tag-more">
+                      +{item.tags.split(',').length - 3}
+                    </Tag>
+                  )}
                 </div>
               )}
             </Space>
@@ -363,12 +509,20 @@ const SearchPage = () => {
                 size="large"
                 placeholder="输入关键词搜索文档..."
                 enterButton={
-                  <Button type="primary" size="large" icon={<SearchOutlined />}>
-                    搜索
+                  <Button
+                    type="primary"
+                    size="large"
+                    icon={loading ? <Spin size="small" /> : <SearchOutlined />}
+                    loading={loading}
+                    aria-label="执行搜索"
+                  >
+                    {loading ? '搜索中...' : '搜索'}
                   </Button>
                 }
                 onSearch={handleSearch}
                 className="search-input"
+                aria-label="搜索文档"
+                disabled={loading}
               />
             </AutoComplete>
 
@@ -376,91 +530,182 @@ const SearchPage = () => {
               className="filter-toggle"
               icon={<FilterOutlined />}
               onClick={() => setShowFilters(!showFilters)}
+              type={showFilters ? "primary" : "default"}
             >
               高级筛选
-              {(filters.fileType || filters.dateRange || filters.uploader) && (
-                <Badge dot status="processing" />
+              {activeFiltersCount > 0 && (
+                <Badge
+                  count={activeFiltersCount}
+                  style={{ backgroundColor: '#667eea', marginLeft: 8 }}
+                />
               )}
             </Button>
           </div>
 
           {/* 高级筛选器 */}
           {showFilters && (
-            <Card className="search-filters">
-              <Space size="large" wrap>
-                <Select
-                  placeholder="文件类型"
-                  style={{ width: 150 }}
-                  allowClear
-                  value={filters.fileType}
-                  onChange={(value) => setFilters({ ...filters, fileType: value })}
-                >
-                  <Option value="pdf">PDF文档</Option>
-                  <Option value="doc">Word文档</Option>
-                  <Option value="xls">Excel表格</Option>
-                  <Option value="ppt">PPT演示</Option>
-                  <Option value="image">图片文件</Option>
-                  <Option value="markdown">Markdown</Option>
-                </Select>
+            <Card className="search-filters" title="高级筛选选项">
+              <Row gutter={[16, 16]}>
+                <Col xs={24} sm={12} md={6}>
+                  <div className="filter-group">
+                    <label className="filter-label">文件类型</label>
+                    <Select
+                      placeholder="选择文件类型"
+                      style={{ width: '100%' }}
+                      allowClear
+                      value={filters.fileType}
+                      onChange={(value) => setFilters({ ...filters, fileType: value })}
+                    >
+                      <Option value="pdf">📄 PDF文档</Option>
+                      <Option value="doc">📝 Word文档</Option>
+                      <Option value="xls">📊 Excel表格</Option>
+                      <Option value="ppt">📋 PPT演示</Option>
+                      <Option value="image">🖼️ 图片文件</Option>
+                      <Option value="markdown">📃 Markdown</Option>
+                    </Select>
+                  </div>
+                </Col>
 
-                <RangePicker
-                  placeholder={['开始日期', '结束日期']}
-                  value={filters.dateRange}
-                  onChange={(dates) => setFilters({ ...filters, dateRange: dates })}
-                />
+                <Col xs={24} sm={12} md={8}>
+                  <div className="filter-group">
+                    <label className="filter-label">创建时间</label>
+                    <RangePicker
+                      placeholder={['开始日期', '结束日期']}
+                      style={{ width: '100%' }}
+                      value={filters.dateRange}
+                      onChange={(dates) => setFilters({ ...filters, dateRange: dates })}
+                    />
+                  </div>
+                </Col>
 
-                <Input
-                  placeholder="上传者"
-                  style={{ width: 150 }}
-                  value={filters.uploader}
-                  onChange={(e) => setFilters({ ...filters, uploader: e.target.value })}
-                  prefix={<UserOutlined />}
-                />
+                <Col xs={24} sm={12} md={6}>
+                  <div className="filter-group">
+                    <label className="filter-label">上传者</label>
+                    <Input
+                      placeholder="输入用户名"
+                      style={{ width: '100%' }}
+                      value={filters.uploader}
+                      onChange={(e) => setFilters({ ...filters, uploader: e.target.value })}
+                      prefix={<UserOutlined />}
+                    />
+                  </div>
+                </Col>
 
-                <Button
-                  type="primary"
-                  onClick={() => handleSearch(searchKeyword)}
-                >
-                  应用筛选
-                </Button>
+                <Col xs={24} sm={12} md={4}>
+                  <div className="filter-actions">
+                    <Space direction="vertical" style={{ width: '100%' }}>
+                      <Button
+                        type="primary"
+                        block
+                        onClick={() => handleSearch(searchKeyword)}
+                        icon={<SearchOutlined />}
+                      >
+                        应用筛选
+                      </Button>
+                      <Button
+                        block
+                        onClick={() => {
+                          setFilters({ fileType: '', dateRange: null, uploader: '' });
+                          handleSearch(searchKeyword);
+                        }}
+                        icon={<ClearOutlined />}
+                      >
+                        重置筛选
+                      </Button>
+                    </Space>
+                  </div>
+                </Col>
+              </Row>
 
-                <Button
-                  onClick={() => {
-                    setFilters({ fileType: '', dateRange: null, uploader: '' });
-                    handleSearch(searchKeyword);
-                  }}
-                >
-                  重置
-                </Button>
-              </Space>
+              {/* 活跃筛选器显示 */}
+              {activeFiltersCount > 0 && (
+                <div className="active-filters">
+                  <Divider orientation="left">当前筛选条件</Divider>
+                  <Space wrap>
+                    {filters.fileType && (
+                      <Tag
+                        closable
+                        color="blue"
+                        onClose={() => setFilters({ ...filters, fileType: '' })}
+                      >
+                        文件类型: {filters.fileType}
+                      </Tag>
+                    )}
+                    {filters.dateRange && filters.dateRange.length === 2 && (
+                      <Tag
+                        closable
+                        color="green"
+                        onClose={() => setFilters({ ...filters, dateRange: null })}
+                      >
+                        时间范围: {filters.dateRange[0].format('YYYY-MM-DD')} ~ {filters.dateRange[1].format('YYYY-MM-DD')}
+                      </Tag>
+                    )}
+                    {filters.uploader && (
+                      <Tag
+                        closable
+                        color="orange"
+                        onClose={() => setFilters({ ...filters, uploader: '' })}
+                      >
+                        上传者: {filters.uploader}
+                      </Tag>
+                    )}
+                    {selectedTags.length > 0 && (
+                      <Tag
+                        closable
+                        color="purple"
+                        onClose={() => setSelectedTags([])}
+                      >
+                        标签: {selectedTags.length} 个
+                      </Tag>
+                    )}
+                    <Button
+                      type="link"
+                      size="small"
+                      onClick={clearAllFilters}
+                      icon={<ClearOutlined />}
+                    >
+                      清除全部
+                    </Button>
+                  </Space>
+                </div>
+              )}
             </Card>
           )}
 
           {/* 选中的标签 */}
           {selectedTags.length > 0 && (
             <div className="selected-tags">
-              <Text strong>已选标签：</Text>
-              {selectedTags.map(tag => (
-                <Tag
-                  key={tag}
-                  closable
-                  color="purple"
-                  onClose={() => handleTagSelect(tag)}
-                  className="selected-tag"
+              <Space align="center" wrap>
+                <Text strong style={{ color: '#667eea' }}>
+                  <TagsOutlined /> 已选标签 ({selectedTags.length})：
+                </Text>
+                {selectedTags.map(tag => (
+                  <Tag
+                    key={tag}
+                    closable
+                    color="purple"
+                    onClose={() => handleTagSelect(tag)}
+                    className="selected-tag"
+                  >
+                    {tag}
+                  </Tag>
+                ))}
+                <Button
+                  type="primary"
+                  ghost
+                  size="small"
+                  onClick={() => {
+                    setSelectedTags([]);
+                    if (searchKeyword) {
+                      handleSearch(searchKeyword);
+                    }
+                  }}
+                  icon={<ClearOutlined />}
+                  className="clear-tags-btn"
                 >
-                  {tag}
-                </Tag>
-              ))}
-              <Button
-                type="link"
-                size="small"
-                onClick={() => {
-                  setSelectedTags([]);
-                  handleSearch(searchKeyword);
-                }}
-              >
-                清除全部
-              </Button>
+                  清除标签
+                </Button>
+              </Space>
             </div>
           )}
         </div>
@@ -488,7 +733,16 @@ const SearchPage = () => {
                       <div
                         key={index}
                         className="history-item"
+                        tabIndex={0}
+                        role="button"
+                        aria-label={`历史搜索: ${history.keyword || history.tags || '标签搜索'}`}
                         onClick={() => handleHistoryClick(history)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleHistoryClick(history);
+                          }
+                        }}
                       >
                         <ClockCircleOutlined />
                         <span className="history-text">
@@ -516,7 +770,17 @@ const SearchPage = () => {
                     <Tag
                       key={tag.name}
                       className={`tag-item ${selectedTags.includes(tag.name) ? 'tag-selected' : ''}`}
+                      tabIndex={0}
+                      role="button"
+                      aria-label={`${selectedTags.includes(tag.name) ? '取消选择' : '选择'}标签: ${tag.name}, ${tag.count} 个文档`}
+                      aria-pressed={selectedTags.includes(tag.name)}
                       onClick={() => handleTagSelect(tag.name)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          handleTagSelect(tag.name);
+                        }
+                      }}
                       color={selectedTags.includes(tag.name) ? 'purple' : 'default'}
                     >
                       <span className="tag-name">{tag.name}</span>
@@ -566,47 +830,122 @@ const SearchPage = () => {
           <Col xs={24} lg={18}>
             <Card className="search-results-card">
               {loading ? (
-                <div className="search-loading">
+                <div className="search-loading" role="status" aria-label="正在搜索文档">
                   <Row gutter={[16, 16]}>
                     {[1, 2, 3, 4, 5, 6].map(i => (
                       <Col xs={24} sm={12} md={8} key={i}>
                         <Card className="document-card skeleton-card">
-                          <Skeleton active />
+                          <Skeleton.Image style={{ width: '100%', height: 160 }} />
+                          <div style={{ padding: '16px' }}>
+                            <Skeleton
+                              active
+                              title={{ width: '80%' }}
+                              paragraph={{
+                                rows: 3,
+                                width: ['100%', '90%', '70%']
+                              }}
+                            />
+                          </div>
                         </Card>
                       </Col>
                     ))}
                   </Row>
+                  <div className="loading-message">
+                    <Spin size="large" />
+                    <Text type="secondary" style={{ marginTop: 16, display: 'block' }}>
+                      正在搜索相关文档，请稍候...
+                    </Text>
+                  </div>
                 </div>
               ) : searchResults.length > 0 || (!hasSearched && hotDocuments.length > 0) ? (
                 <>
                   <div className="results-header">
                     {hasSearched ? (
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Text strong>
-                          找到 <span className="result-count">{pagination.total}</span> 个相关文档
-                        </Text>
-                        <Button
-                          type="link"
-                          icon={<ClockCircleOutlined />}
-                          onClick={() => {
-                            setSearchKeyword('');
-                            setSelectedTags([]);
-                            setSearchResults([]);
-                            setHasSearched(false);
-                            setPagination({ current: 1, pageSize: 12, total: 0 });
-                          }}
-                        >
-                          返回热门推荐
-                        </Button>
-                      </div>
+                      <Row justify="space-between" align="middle">
+                        <Col>
+                          <Space size="large">
+                            <Text strong style={{ fontSize: 16 }}>
+                              找到 <span className="result-count">{pagination.total}</span> 个相关文档
+                            </Text>
+                            {searchKeyword && (
+                              <Text type="secondary">
+                                搜索关键词: "{searchKeyword}"
+                              </Text>
+                            )}
+                          </Space>
+                        </Col>
+                        <Col>
+                          <Space>
+                            {/* 排序控件 */}
+                            <Dropdown
+                              overlay={
+                                <Menu
+                                  selectedKeys={[sortBy]}
+                                  onClick={({ key }) => {
+                                    setSortBy(key);
+                                    handleSearch(searchKeyword);
+                                  }}
+                                >
+                                  {sortOptions.map(option => (
+                                    <Menu.Item key={option.key} icon={option.icon}>
+                                      {option.label}
+                                    </Menu.Item>
+                                  ))}
+                                </Menu>
+                              }
+                              trigger={['click']}
+                            >
+                              <Button icon={<SortAscendingOutlined />}>
+                                排序: {sortOptions.find(opt => opt.key === sortBy)?.label}
+                              </Button>
+                            </Dropdown>
+
+                            <Button
+                              icon={sortOrder === 'asc' ? <SortAscendingOutlined /> : <SortDescendingOutlined />}
+                              onClick={() => {
+                                const newOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                                setSortOrder(newOrder);
+                                handleSearch(searchKeyword);
+                              }}
+                            >
+                              {sortOrder === 'asc' ? '升序' : '降序'}
+                            </Button>
+
+                            <Button
+                              type="link"
+                              icon={<ClockCircleOutlined />}
+                              onClick={() => {
+                                setSearchKeyword('');
+                                setSelectedTags([]);
+                                setSearchResults([]);
+                                setHasSearched(false);
+                                setPagination({ current: 1, pageSize: 12, total: 0 });
+                                setSortBy('relevance');
+                                setSortOrder('desc');
+                              }}
+                            >
+                              返回热门推荐
+                            </Button>
+                          </Space>
+                        </Col>
+                      </Row>
                     ) : (
-                      <Space size="middle">
-                        <FireOutlined style={{ fontSize: 20, color: '#667eea' }} />
-                        <Text strong style={{ fontSize: 16 }}>
-                          热门文档推荐
-                        </Text>
-                        <Tag color="purple">按下载量排序</Tag>
-                      </Space>
+                      <Row justify="space-between" align="middle">
+                        <Col>
+                          <Space size="middle">
+                            <FireOutlined style={{ fontSize: 20, color: '#667eea' }} />
+                            <Text strong style={{ fontSize: 16 }}>
+                              热门文档推荐
+                            </Text>
+                            <Tag color="purple">按下载量排序</Tag>
+                          </Space>
+                        </Col>
+                        <Col>
+                          <Text type="secondary" style={{ fontSize: 14 }}>
+                            显示最受欢迎的 {hotDocuments.length} 个文档
+                          </Text>
+                        </Col>
+                      </Row>
                     )}
                   </div>
                   <List

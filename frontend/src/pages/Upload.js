@@ -157,9 +157,10 @@ const UploadDocument = () => {
 
           {fileList.length > 0 && (
             <div className="file-info">
-              <FileOutlined /> {fileList[0].name}
-              <span style={{ marginLeft: 10, color: '#999' }}>
-                ({(fileList[0].size / 1024 / 1024).toFixed(2)} MB)
+              <FileOutlined />
+              <span className="file-name">{fileList[0].name}</span>
+              <span className="file-size">
+                {(fileList[0].size / 1024 / 1024).toFixed(2)} MB
               </span>
             </div>
           )}
@@ -184,23 +185,21 @@ const UploadDocument = () => {
           </Form.Item>
 
           <Form.Item label="标签">
-            <Space>
+            <div className="tag-input-container">
               <Input
                 placeholder="输入标签后按回车"
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onPressEnter={handleAddTag}
-                style={{ width: 200 }}
               />
-              <Button onClick={handleAddTag}>添加</Button>
-            </Space>
-            <div style={{ marginTop: 10 }}>
+              <Button onClick={handleAddTag} type="default">添加</Button>
+            </div>
+            <div className="tags-display">
               {tags.map(tag => (
                 <Tag
                   key={tag}
                   closable
                   onClose={() => handleRemoveTag(tag)}
-                  style={{ marginBottom: 5 }}
                 >
                   {tag}
                 </Tag>
@@ -213,23 +212,32 @@ const UploadDocument = () => {
             label="是否公开"
             valuePropName="checked"
           >
-            <Switch checkedChildren="公开" unCheckedChildren="私有" />
+            <div className="switch-container">
+              <Switch checkedChildren="公开" unCheckedChildren="私有" />
+              <span className="switch-description">
+                公开文档所有用户均可查看和下载
+              </span>
+            </div>
           </Form.Item>
 
           <Form.Item>
-            <Space>
+            <div className="form-buttons">
               <Button
                 type="primary"
                 htmlType="submit"
                 loading={loading}
                 icon={<UploadOutlined />}
+                size="large"
               >
                 上传文档
               </Button>
-              <Button onClick={() => navigate('/documents')}>
+              <Button
+                onClick={() => navigate('/documents')}
+                size="large"
+              >
                 取消
               </Button>
-            </Space>
+            </div>
           </Form.Item>
         </Form>
       </Card>

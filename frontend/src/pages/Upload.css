@@ -1,36 +1,393 @@
+/* 上传页面样式 */
+@import '../styles/variables.css';
+
+/* 容器样式 */
 .upload-container {
-  padding: 24px;
-  max-width: 800px;
+  padding: 0;
+  max-width: 900px;
   margin: 0 auto;
-  position: relative;
-  min-height: calc(100vh - 72px);
+  animation: fadeInUp var(--duration-normal) var(--ease-out);
 }
 
-/* 页面顶部背景 */
-.upload-container::before {
-  content: '';
-  position: fixed;
-  top: 72px;
-  left: 0;
-  right: 0;
-  height: 120px;
-  background: linear-gradient(135deg,
-    rgba(99, 102, 241, 0.05) 0%,
-    rgba(168, 85, 247, 0.05) 25%,
-    rgba(236, 72, 153, 0.03) 50%,
-    rgba(99, 102, 241, 0.05) 100%);
-  z-index: -1;
-  border-radius: 0 0 24px 24px;
-}
-
+/* 上传卡片 */
 .upload-card {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  background: white;
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
 }
 
-.file-info {
-  padding: 10px;
-  background: #f5f5f5;
-  border-radius: 4px;
-  margin-bottom: 16px;
+.upload-card .ant-card-head {
+  background: var(--primary-gradient);
+  border-bottom: none;
+  padding: 24px 32px;
 }
+
+.upload-card .ant-card-head-title {
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.upload-card .ant-card-body {
+  padding: 32px;
+}
+
+/* 拖拽上传区域 */
+.ant-upload-dragger {
+  background: linear-gradient(135deg, #f8fafb 0%, #e3f2f1 100%) !important;
+  border: 2px dashed var(--primary-light) !important;
+  border-radius: var(--border-radius-lg) !important;
+  transition: all var(--duration-fast) var(--ease-in-out) !important;
+  height: 200px !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.ant-upload-dragger::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-in-out);
+  pointer-events: none;
+}
+
+.ant-upload-dragger:hover {
+  border-color: var(--primary-color) !important;
+  background: linear-gradient(135deg, #f0fffe 0%, #d6f0ee 100%) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(15, 118, 110, 0.15);
+}
+
+.ant-upload-dragger:hover::before {
+  opacity: 0.05;
+}
+
+/* 拖拽激活状态 */
+.ant-upload-drag-hover:not(.ant-upload-disabled) .ant-upload-dragger {
+  border-color: var(--primary-color) !important;
+  background: linear-gradient(135deg, #e6fffe 0%, #c2ebe8 100%) !important;
+  box-shadow: 0 12px 32px rgba(15, 118, 110, 0.2) !important;
+}
+
+.ant-upload-drag-hover:not(.ant-upload-disabled) .ant-upload-dragger::before {
+  opacity: 0.1;
+}
+
+/* 上传图标 */
+.ant-upload-drag-icon {
+  margin-bottom: 20px !important;
+}
+
+.ant-upload-drag-icon .anticon {
+  font-size: 64px !important;
+  color: var(--primary-color) !important;
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.ant-upload-dragger:hover .ant-upload-drag-icon .anticon {
+  transform: scale(1.1);
+  color: var(--primary-dark) !important;
+}
+
+/* 上传文字 */
+.ant-upload-text {
+  font-size: 16px !important;
+  font-weight: 500;
+  color: var(--text-primary) !important;
+  margin: 0 0 8px 0 !important;
+}
+
+.ant-upload-hint {
+  font-size: 13px !important;
+  color: var(--text-secondary) !important;
+  max-width: 400px;
+  margin: 0 auto !important;
+  line-height: 1.6;
+}
+
+/* 文件信息展示 */
+.file-info {
+  padding: 16px 20px;
+  background: linear-gradient(135deg, var(--bg-tertiary) 0%, #f8fafb 100%);
+  border-radius: var(--border-radius-md);
+  margin-top: 16px;
+  margin-bottom: 24px;
+  border-left: 4px solid var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.file-info:hover {
+  background: linear-gradient(135deg, #e8f5f4 0%, #f0f7f7 100%);
+  transform: translateX(4px);
+}
+
+.file-info .anticon {
+  font-size: 20px;
+  color: var(--primary-color);
+}
+
+.file-info .file-name {
+  flex: 1;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.file-info .file-size {
+  color: var(--text-tertiary);
+  font-size: 12px;
+  background: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+/* 表单样式优化 */
+.upload-card .ant-form-item-label > label {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.upload-card .ant-input,
+.upload-card .ant-input-textarea textarea {
+  border-radius: var(--border-radius-md);
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.upload-card .ant-input:hover,
+.upload-card .ant-input-textarea textarea:hover {
+  border-color: var(--primary-light);
+}
+
+.upload-card .ant-input:focus,
+.upload-card .ant-input-textarea textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+}
+
+/* 标签输入区域 */
+.tag-input-container {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.tag-input-container .ant-input {
+  flex: 1;
+}
+
+.tags-display {
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--bg-tertiary);
+  border-radius: var(--border-radius-md);
+  min-height: 48px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.tags-display:empty::before {
+  content: '暂无标签';
+  color: var(--text-tertiary);
+  font-size: 13px;
+}
+
+.tags-display .ant-tag {
+  margin: 0 !important;
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 13px;
+  border: 1px solid var(--primary-light);
+  background: white;
+  color: var(--primary-color);
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.tags-display .ant-tag:hover {
+  background: var(--primary-light);
+  color: white;
+  transform: scale(1.05);
+}
+
+/* 公开/私有开关 */
+.upload-card .ant-switch {
+  background: var(--gray-400);
+}
+
+.upload-card .ant-switch-checked {
+  background: var(--primary-gradient) !important;
+}
+
+.switch-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--bg-tertiary);
+  border-radius: var(--border-radius-md);
+}
+
+.switch-description {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+/* 按钮组 */
+.form-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+.upload-card .ant-btn-primary {
+  background: var(--primary-gradient) !important;
+  border: none !important;
+  height: 40px;
+  padding: 0 24px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.upload-card .ant-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(15, 118, 110, 0.4);
+}
+
+.upload-card .ant-btn-default {
+  height: 40px;
+  padding: 0 24px;
+  font-weight: 500;
+  border-color: var(--border-color);
+}
+
+.upload-card .ant-btn-default:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+/* 上传进度条（未来功能预留） */
+.upload-progress {
+  margin-top: 16px;
+}
+
+.upload-progress .ant-progress-line {
+  font-size: 13px;
+}
+
+.upload-progress .ant-progress-bg {
+  background: var(--primary-gradient) !important;
+  height: 8px !important;
+  border-radius: 4px;
+}
+
+/* 成功提示样式 */
+.upload-success-container {
+  text-align: center;
+  padding: 48px;
+  animation: fadeInUp var(--duration-normal) var(--ease-out);
+}
+
+.upload-success-icon {
+  font-size: 72px;
+  color: var(--success-color);
+  margin-bottom: 24px;
+}
+
+.upload-success-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.upload-success-description {
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .upload-container {
+    padding: 16px;
+  }
+
+  .upload-card .ant-card-body {
+    padding: 20px;
+  }
+
+  .ant-upload-dragger {
+    height: 160px !important;
+  }
+
+  .ant-upload-drag-icon .anticon {
+    font-size: 48px !important;
+  }
+
+  .tag-input-container {
+    flex-direction: column;
+  }
+
+  .tag-input-container .ant-input {
+    width: 100%;
+  }
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.ant-upload-list-item-uploading {
+  animation: pulse 2s infinite;
+}
+
+/* 文件类型标识（用于上传列表） */
+.file-type-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.file-type-pdf { background: #ffe6e6; color: #ff4d4f; }
+.file-type-word { background: #e6f4ff; color: #1890ff; }
+.file-type-excel { background: #f0ffe6; color: #52c41a; }
+.file-type-ppt { background: #fff4e6; color: #fa8c16; }
+.file-type-image { background: #f4e6ff; color: #722ed1; }
+.file-type-markdown { background: #e6fffd; color: #13c2c2; }
+.file-type-text { background: #f5f5f5; color: #595959; }

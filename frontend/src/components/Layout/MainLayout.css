@@ -378,18 +378,31 @@
   min-width: 80px !important;
 }
 
+/* 强化折叠状态下的Logo居中样式 */
 .layout-sidebar.ant-layout-sider-collapsed .sidebar-logo {
   padding: 0 !important;
+  margin: 0 !important;
   justify-content: center !important;
   align-items: center !important;
   display: flex !important;
   width: 80px !important;
+  position: relative !important;
 }
 
 .layout-sidebar.ant-layout-sider-collapsed .logo-icon {
-  margin: 0 !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
   transform: none !important;
   font-size: 24px !important;
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  height: auto !important;
 }
 
 .layout-sidebar.ant-layout-sider-collapsed .logo-text {

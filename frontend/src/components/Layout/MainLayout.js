@@ -130,8 +130,35 @@ const MainLayout = ({ children }) => {
         }}
       >
         {/* Logo区域 */}
-        <div className="sidebar-logo">
-          <BookOutlined className="logo-icon" />
+        <div
+          className="sidebar-logo"
+          style={collapsed ? {
+            padding: '0 !important',
+            margin: '0 !important',
+            justifyContent: 'center !important',
+            alignItems: 'center !important',
+            display: 'flex !important',
+            width: '80px !important',
+            height: '64px',
+            position: 'relative'
+          } : {}}
+        >
+          <BookOutlined
+            className="logo-icon"
+            style={collapsed ? {
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%)',
+              margin: '0',
+              padding: '0',
+              fontSize: '24px',
+              color: 'white',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            } : {}}
+          />
           {!collapsed && (
             <span className="logo-text">团队知识库</span>
           )}

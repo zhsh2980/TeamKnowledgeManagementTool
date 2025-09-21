@@ -22,7 +22,8 @@ import {
   Divider,
   Avatar,
   Menu,
-  Popover
+  Popover,
+  Modal
 } from 'antd';
 import {
   SearchOutlined,
@@ -52,7 +53,8 @@ import {
   ShareAltOutlined,
   MoreOutlined,
   ClearOutlined,
-  HighlightOutlined
+  HighlightOutlined,
+  DeleteOutlined
 } from '@ant-design/icons';
 import { searchService, documentService } from '../services/api';
 import { formatFileSize, formatDate } from '../utils/format';
@@ -250,6 +252,41 @@ const SearchPage = () => {
     const tags = history.tags ? history.tags.split(',').map(t => t.trim()) : [];
     setSelectedTags(tags);
     handleSearch(history.keyword);
+  };
+
+  // 删除单个搜索历史
+  const handleDeleteHistory = async (history, e) => {
+    e.stopPropagation(); // 阻止触发历史点击事件
+
+    try {
+      await searchService.deleteHistory(history.keyword, history.tags);
+      message.success('删除搜索历史成功');
+      loadSearchHistory(); // 重新加载历史列表
+    } catch (error) {
+      console.error('删除搜索历史失败:', error);
+      message.error('删除搜索历史失败');
+    }
+  };
+
+  // 清空所有搜索历史
+  const handleClearAllHistory = () => {
+    Modal.confirm({
+      title: '确认清空搜索历史',
+      content: '确定要清空所有搜索历史吗？此操作不可恢复。',
+      okText: '确认清空',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk: async () => {
+        try {
+          await searchService.clearAllHistory();
+          message.success('清空搜索历史成功');
+          setSearchHistory([]);
+        } catch (error) {
+          console.error('清空搜索历史失败:', error);
+          message.error('清空搜索历史失败');
+        }
+      }
+    });
   };
 
   // 处理文档下载
@@ -491,6 +528,7 @@ const SearchPage = () => {
               value={searchKeyword}
               onChange={setSearchKeyword}
               options={renderSearchSuggestions()}
+              dropdownClassName="search-suggestions"
               onSearch={(value) => {
                 // 模拟搜索建议
                 if (value) {
@@ -721,9 +759,21 @@ const SearchPage = () => {
                 <Card
                   className="sidebar-card history-card"
                   title={
-                    <Space>
-                      <HistoryOutlined />
-                      <span>搜索历史</span>
+                    <Space style={{ width: '100%', justifyContent: 'space-between' }}>
+                      <Space>
+                        <HistoryOutlined />
+                        <span>搜索历史</span>
+                      </Space>
+                      <Tooltip title="清空所有历史">
+                        <Button
+                          type="text"
+                          size="small"
+                          icon={<DeleteOutlined />}
+                          onClick={handleClearAllHistory}
+                          style={{ color: '#ff4d4f' }}
+                          className="clear-history-btn"
+                        />
+                      </Tooltip>
                     </Space>
                   }
                   size="small"
@@ -744,10 +794,26 @@ const SearchPage = () => {
                           }
                         }}
                       >
-                        <ClockCircleOutlined />
-                        <span className="history-text">
-                          {history.keyword || history.tags || '标签搜索'}
-                        </span>
+                        <div className="history-content">
+                          <ClockCircleOutlined />
+                          <span className="history-text">
+                            {history.keyword || history.tags || '标签搜索'}
+                          </span>
+                        </div>
+                        <Tooltip title="删除此项">
+                          <Button
+                            type="text"
+                            size="small"
+                            icon={<DeleteOutlined />}
+                            onClick={(e) => handleDeleteHistory(history, e)}
+                            className="delete-history-btn"
+                            style={{
+                              opacity: 0,
+                              transition: 'all 0.2s ease',
+                              color: '#ff4d4f'
+                            }}
+                          />
+                        </Tooltip>
                       </div>
                     ))}
                   </div>

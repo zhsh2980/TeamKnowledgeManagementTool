@@ -109,6 +109,23 @@ export const searchService = {
   getHistory: async (limit = 10) => {
     const response = await api.get('/search/history', { params: { limit } });
     return response.data;
+  },
+
+  deleteHistory: async (keyword, tags) => {
+    const response = await api.delete('/search/history', {
+      data: { keyword, tags }
+    });
+    return response.data;
+  },
+
+  deleteHistoryById: async (id) => {
+    const response = await api.delete(`/search/history/${id}`);
+    return response.data;
+  },
+
+  clearAllHistory: async () => {
+    const response = await api.delete('/search/history/clear');
+    return response.data;
   }
 };
 

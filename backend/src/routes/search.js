@@ -156,10 +156,11 @@ router.get('/history', authMiddleware, (req, res) => {
     const { limit = 10 } = req.query;
 
     db.all(
-      `SELECT DISTINCT keyword, tags
+      `SELECT id, keyword, tags, searched_at
        FROM search_logs
        WHERE user_id = ? AND (keyword != '' OR tags != '')
-       ORDER BY searched_at DESC
+       GROUP BY keyword, tags
+       ORDER BY MAX(searched_at) DESC
        LIMIT ?`,
       [userId, parseInt(limit)],
       (err, history) => {
@@ -180,6 +181,152 @@ router.get('/history', authMiddleware, (req, res) => {
     );
   } catch (error) {
     console.error('获取搜索历史错误:', error);
+    res.status(500).json({
+      success: false,
+      message: '服务器内部错误'
+    });
+  }
+});
+
+// 删除单个搜索历史
+router.delete('/history/:id', authMiddleware, (req, res) => {
+  try {
+    const userId = req.user.id;
+    const historyId = req.params.id;
+
+    // 验证历史记录是否属于当前用户
+    db.get(
+      `SELECT id FROM search_logs WHERE id = ? AND user_id = ?`,
+      [historyId, userId],
+      (err, record) => {
+        if (err) {
+          console.error('查询搜索历史错误:', err);
+          return res.status(500).json({
+            success: false,
+            message: '服务器内部错误'
+          });
+        }
+
+        if (!record) {
+          return res.status(404).json({
+            success: false,
+            message: '搜索历史不存在或无权限删除'
+          });
+        }
+
+        // 删除搜索历史记录
+        db.run(
+          `DELETE FROM search_logs WHERE id = ? AND user_id = ?`,
+          [historyId, userId],
+          function(err) {
+            if (err) {
+              console.error('删除搜索历史错误:', err);
+              return res.status(500).json({
+                success: false,
+                message: '服务器内部错误'
+              });
+            }
+
+            res.json({
+              success: true,
+              message: '删除搜索历史成功'
+            });
+          }
+        );
+      }
+    );
+  } catch (error) {
+    console.error('删除搜索历史错误:', error);
+    res.status(500).json({
+      success: false,
+      message: '服务器内部错误'
+    });
+  }
+});
+
+// 删除特定关键词和标签的搜索历史
+router.delete('/history', authMiddleware, (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { keyword, tags } = req.body;
+
+    if (!keyword && !tags) {
+      return res.status(400).json({
+        success: false,
+        message: '请提供关键词或标签'
+      });
+    }
+
+    // 构建删除条件
+    let whereConditions = ['user_id = ?'];
+    let params = [userId];
+
+    if (keyword) {
+      whereConditions.push('keyword = ?');
+      params.push(keyword);
+    }
+
+    if (tags) {
+      whereConditions.push('tags = ?');
+      params.push(tags);
+    }
+
+    const whereClause = whereConditions.join(' AND ');
+
+    db.run(
+      `DELETE FROM search_logs WHERE ${whereClause}`,
+      params,
+      function(err) {
+        if (err) {
+          console.error('删除搜索历史错误:', err);
+          return res.status(500).json({
+            success: false,
+            message: '服务器内部错误'
+          });
+        }
+
+        res.json({
+          success: true,
+          data: { deletedCount: this.changes },
+          message: '删除搜索历史成功'
+        });
+      }
+    );
+  } catch (error) {
+    console.error('删除搜索历史错误:', error);
+    res.status(500).json({
+      success: false,
+      message: '服务器内部错误'
+    });
+  }
+});
+
+// 清空所有搜索历史
+router.delete('/history/clear', authMiddleware, (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    db.run(
+      `DELETE FROM search_logs WHERE user_id = ?`,
+      [userId],
+      function(err) {
+        if (err) {
+          console.error('清空搜索历史错误:', err);
+          return res.status(500).json({
+            success: false,
+            message: '服务器内部错误'
+          });
+        }
+
+        res.json({
+          success: true,
+          data: { deletedCount: this.changes },
+          message: '清空搜索历史成功'
+        });
+      }
+    );
+  } catch (error) {
+    console.error('清空搜索历史错误:', error);
     res.status(500).json({
       success: false,
       message: '服务器内部错误'

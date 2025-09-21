@@ -1098,3 +1098,112 @@
     color: #cbd5e1;
   }
 }
+
+/* 搜索历史删除功能样式 */
+.history-item {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.history-content .history-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.delete-history-btn {
+  opacity: 0 !important;
+  transition: all 0.2s ease !important;
+  color: #ff4d4f !important;
+  flex-shrink: 0;
+}
+
+.history-item:hover .delete-history-btn {
+  opacity: 1 !important;
+}
+
+.delete-history-btn:hover {
+  background: rgba(255, 77, 79, 0.1) !important;
+  color: #ff4d4f !important;
+  transform: scale(1.1);
+}
+
+.clear-history-btn {
+  opacity: 0.6;
+  transition: all 0.2s ease;
+}
+
+.clear-history-btn:hover {
+  opacity: 1;
+  background: rgba(255, 77, 79, 0.1) !important;
+  color: #ff4d4f !important;
+  transform: scale(1.05);
+}
+
+/* 确保移动端删除按钮可见 */
+@media (max-width: 768px) {
+  .delete-history-btn {
+    opacity: 0.7 !important;
+  }
+
+  .history-item:hover .delete-history-btn,
+  .history-item:focus .delete-history-btn {
+    opacity: 1 !important;
+  }
+
+  .delete-history-btn,
+  .clear-history-btn {
+    min-width: 32px !important;
+    min-height: 32px !important;
+    padding: 0 !important;
+  }
+}
+
+/* 动画效果 */
+.history-item {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 删除时的退出动画 */
+.history-item-exit {
+  animation: slideOutRight 0.3s ease-in forwards;
+}
+
+@keyframes slideOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+}
+
+/* 暗色模式下的删除按钮 */
+@media (prefers-color-scheme: dark) {
+  .delete-history-btn:hover,
+  .clear-history-btn:hover {
+    background: rgba(255, 77, 79, 0.2) !important;
+  }
+}

@@ -1,11 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout } from 'antd';
 import AppHeader from './AppHeader';
+import CommandPalette from '../CommandPalette/CommandPalette';
 import './MainLayout.css';
 
 const { Content, Footer } = Layout;
 
 const MainLayout = ({ children }) => {
+  const [commandPaletteVisible, setCommandPaletteVisible] = useState(false);
+
+  // 监听快捷键
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Cmd/Ctrl + K 打开命令面板
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setCommandPaletteVisible(true);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
     <Layout className="main-layout">
       <AppHeader />
@@ -28,6 +45,10 @@ const MainLayout = ({ children }) => {
       }}>
         团队知识库管理工具 ©2024 Powered by Professional Team
       </Footer>
+      <CommandPalette
+        visible={commandPaletteVisible}
+        onClose={() => setCommandPaletteVisible(false)}
+      />
     </Layout>
   );
 };

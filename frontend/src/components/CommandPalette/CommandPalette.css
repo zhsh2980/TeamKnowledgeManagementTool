@@ -1,0 +1,393 @@
+/* 命令面板样式 - 商业级UI设计 */
+.command-palette-modal {
+  top: 15vh;
+}
+
+.command-palette-modal .ant-modal-content {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.12),
+    0 12px 24px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  overflow: hidden;
+  padding: 0;
+}
+
+.command-palette-modal .ant-modal-body {
+  padding: 0;
+  max-height: 60vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.command-palette {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* 头部搜索区域 */
+.command-palette-header {
+  padding: 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.command-palette-input {
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  font-size: 16px;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    inset 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.command-palette-input:focus,
+.command-palette-input.ant-input-focused {
+  box-shadow:
+    0 0 0 3px rgba(102, 126, 234, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.command-palette-input .ant-input-prefix {
+  margin-right: 12px;
+}
+
+.command-palette-input .search-icon {
+  color: #64748b;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.command-palette-input .command-icon {
+  color: #667eea;
+  font-size: 18px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* 主体内容区域 */
+.command-palette-body {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 200px;
+  max-height: 400px;
+}
+
+.command-palette-list {
+  padding: 8px;
+}
+
+.command-palette-list .ant-list-item {
+  border: none;
+  padding: 0;
+  margin-bottom: 4px;
+}
+
+/* 搜索结果项 */
+.command-palette-item {
+  border-radius: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  border: 2px solid transparent;
+}
+
+.command-palette-item:hover {
+  background: rgba(102, 126, 234, 0.05);
+  border-color: rgba(102, 126, 234, 0.1);
+  transform: translateX(4px);
+}
+
+.command-palette-item.active {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border-color: rgba(102, 126, 234, 0.2);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+}
+
+.command-palette-item-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.command-palette-item-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border-radius: 10px;
+  font-size: 20px;
+  color: #667eea;
+  flex-shrink: 0;
+}
+
+.command-palette-item.active .command-palette-item-icon {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.command-palette-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.command-palette-item-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.command-palette-category-tag {
+  font-size: 11px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border: none;
+  color: #667eea;
+  font-weight: 500;
+  padding: 0 8px;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 10px;
+}
+
+.command-palette-item-description {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.command-palette-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.command-palette-item-meta .meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.command-palette-item-meta .meta-item .anticon {
+  font-size: 12px;
+}
+
+.command-palette-item-meta .meta-tags {
+  display: flex;
+  gap: 4px;
+}
+
+.command-palette-item-meta .ant-tag {
+  font-size: 11px;
+  padding: 0 6px;
+  height: 18px;
+  line-height: 18px;
+  background: rgba(102, 126, 234, 0.08);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  color: #667eea;
+  border-radius: 8px;
+}
+
+/* 空状态 */
+.command-palette-empty {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.command-palette-empty .ant-typography {
+  font-size: 14px;
+}
+
+/* 提示区域 */
+.command-palette-hints {
+  padding: 20px;
+}
+
+.hint-section {
+  margin-bottom: 20px;
+}
+
+.hint-section:last-child {
+  margin-bottom: 0;
+}
+
+.hint-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.hint-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border: 1px solid rgba(102, 126, 234, 0.1);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 14px;
+  color: #374151;
+}
+
+.hint-item:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border-color: rgba(102, 126, 234, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.hint-item .anticon {
+  font-size: 18px;
+  color: #667eea;
+}
+
+.hint-text {
+  display: block;
+  text-align: center;
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+/* 底部快捷键提示 */
+.command-palette-footer {
+  padding: 12px 20px;
+  background: rgba(248, 250, 252, 0.9);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.command-palette-shortcuts {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.shortcut {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.shortcut kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* 滚动条样式 */
+.command-palette-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.command-palette-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 4px;
+}
+
+.command-palette-body::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.command-palette-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .command-palette-modal {
+    top: 10vh;
+    margin: 0 16px;
+  }
+
+  .command-palette-modal .ant-modal-content {
+    border-radius: 16px;
+  }
+
+  .hint-items {
+    grid-template-columns: 1fr;
+  }
+
+  .command-palette-shortcuts {
+    gap: 12px;
+  }
+}
+
+/* 暗色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .command-palette-modal .ant-modal-content {
+    background: rgba(30, 41, 59, 0.98);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .command-palette-header {
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.9) 0%, rgba(30, 41, 59, 0.7) 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .command-palette-input {
+    background: rgba(255, 255, 255, 0.05);
+    color: #e2e8f0;
+  }
+
+  .command-palette-item-title {
+    color: #e2e8f0;
+  }
+
+  .command-palette-item-description {
+    color: #94a3b8;
+  }
+
+  .hint-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+  }
+
+  .command-palette-footer {
+    background: rgba(30, 41, 59, 0.9);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .shortcut kbd {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #e2e8f0;
+  }
+}

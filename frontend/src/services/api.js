@@ -81,6 +81,11 @@ export const documentService = {
   delete: async (id) => {
     const response = await api.delete(`/documents/${id}`);
     return response.data;
+  },
+
+  preview: async (id) => {
+    const response = await api.get(`/documents/${id}/preview`);
+    return response.data;
   }
 };
 

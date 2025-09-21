@@ -240,6 +240,89 @@ router.get('/:id/download', authMiddleware, (req, res) => {
   }
 });
 
+// 预览文档
+router.get('/:id/preview', authMiddleware, (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    // 查询文档信息
+    db.get(
+      `SELECT * FROM documents WHERE id = ? AND (is_public = 1 OR upload_user_id = ?)`,
+      [id, userId],
+      (err, document) => {
+        if (err) {
+          console.error('查询文档错误:', err);
+          return res.status(500).json({
+            success: false,
+            message: '服务器内部错误'
+          });
+        }
+
+        if (!document) {
+          return res.status(404).json({
+            success: false,
+            message: '文档不存在或无权访问'
+          });
+        }
+
+        const filePath = path.join(__dirname, '../../uploads', document.file_path);
+
+        // 检查文件是否存在
+        if (!fs.existsSync(filePath)) {
+          return res.status(404).json({
+            success: false,
+            message: '文件不存在'
+          });
+        }
+
+        const ext = path.extname(document.file_name).toLowerCase();
+
+        // 根据文件类型返回预览内容
+        if (['.jpg', '.jpeg', '.png', '.gif', '.svg'].includes(ext)) {
+          // 图片直接返回
+          res.sendFile(filePath);
+        } else if (ext === '.pdf') {
+          // PDF直接返回
+          res.contentType('application/pdf');
+          res.sendFile(filePath);
+        } else if (['.txt', '.md', '.json', '.js', '.jsx', '.ts', '.tsx', '.html', '.css', '.xml'].includes(ext)) {
+          // 文本文件返回内容
+          fs.readFile(filePath, 'utf8', (err, content) => {
+            if (err) {
+              console.error('读取文件错误:', err);
+              return res.status(500).json({
+                success: false,
+                message: '读取文件失败'
+              });
+            }
+
+            res.json({
+              success: true,
+              data: {
+                content: content,
+                type: ext.substring(1)
+              }
+            });
+          });
+        } else {
+          // 不支持预览的文件类型
+          res.status(400).json({
+            success: false,
+            message: '文件类型不支持预览'
+          });
+        }
+      }
+    );
+  } catch (error) {
+    console.error('预览文档错误:', error);
+    res.status(500).json({
+      success: false,
+      message: '服务器内部错误'
+    });
+  }
+});
+
 // 删除文档
 router.delete('/:id', authMiddleware, (req, res) => {
   try {

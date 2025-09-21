@@ -20,6 +20,8 @@ import {
 } from '@ant-design/icons';
 import { clearAuth, getCurrentUser } from '../../utils/auth';
 import CommandPalette from '../CommandPalette/CommandPalette';
+import ThemeSwitcher from '../ThemeSwitcher';
+import ColorThemeSelector from '../ColorThemeSelector';
 import './MainLayout.css';
 
 const { Header, Sider, Content, Footer } = Layout;
@@ -162,6 +164,12 @@ const MainLayout = ({ children }) => {
 
           <div className="header-right">
             <Space size="large">
+              {/* 配色主题选择器 */}
+              <ColorThemeSelector />
+
+              {/* 主题切换器 */}
+              <ThemeSwitcher />
+
               {/* 通知图标 */}
               <Tooltip title="通知中心">
                 <Badge count={5} size="small">

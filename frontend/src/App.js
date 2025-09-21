@@ -4,7 +4,7 @@ import { ConfigProvider, Spin } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import 'antd/dist/reset.css';
 import './styles/global.css';
-import { lightTheme } from './styles/theme';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -59,9 +59,10 @@ function App() {
   }
 
   return (
-    <ConfigProvider locale={zhCN} theme={lightTheme}>
-      <Router>
-        <Routes>
+    <ThemeProvider>
+      <ConfigProvider locale={zhCN}>
+        <Router>
+          <Routes>
           {/* 公开路由 */}
           <Route
             path="/login"
@@ -135,9 +136,10 @@ function App() {
 
           {/* 默认重定向 */}
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Router>
-    </ConfigProvider>
+          </Routes>
+        </Router>
+      </ConfigProvider>
+    </ThemeProvider>
   );
 }
 

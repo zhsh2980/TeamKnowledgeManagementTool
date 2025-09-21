@@ -64,6 +64,11 @@ export const documentService = {
     return response.data;
   },
 
+  getList: async (params) => {
+    const response = await api.get('/documents', { params });
+    return response.data;
+  },
+
   upload: async (formData) => {
     const response = await api.post('/documents', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }

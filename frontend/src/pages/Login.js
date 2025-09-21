@@ -1,25 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, message, Tabs, Typography, Divider, Checkbox } from 'antd';
+import React, { useState } from 'react';
+import { Form, Input, Button, Card, message, Tabs, Typography, Checkbox } from 'antd';
 import {
   UserOutlined,
   LockOutlined,
   MailOutlined,
   BookOutlined,
-  GithubOutlined,
-  GoogleOutlined,
-  WechatOutlined,
-  SafetyOutlined,
-  RocketOutlined,
-  ThunderboltOutlined,
-  GlobalOutlined,
-  CheckCircleOutlined,
-  ApiOutlined,
-  CloudOutlined,
-  TeamOutlined
+  CheckCircleOutlined
 } from '@ant-design/icons';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../services/api';
 import { saveAuth } from '../utils/auth';
+import ThemeSwitcher from '../components/ThemeSwitcher';
+import ColorThemeSelector from '../components/ColorThemeSelector';
 import './Login.css';
 
 const { Title, Text } = Typography;
@@ -27,19 +19,10 @@ const { Title, Text } = Typography;
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('login');
-  const [backgroundIndex, setBackgroundIndex] = useState(0);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
   const [loginForm] = Form.useForm();
   const [registerForm] = Form.useForm();
-
-  // 动态背景切换
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setBackgroundIndex(prev => (prev + 1) % 3);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleLogin = async (values) => {
     setLoading(true);
@@ -102,6 +85,7 @@ const Login = () => {
           prefix={<UserOutlined className="input-icon" />}
           placeholder="用户名 / 邮箱"
           className="auth-input"
+          autoComplete="username"
         />
       </Form.Item>
 
@@ -113,6 +97,7 @@ const Login = () => {
           prefix={<LockOutlined className="input-icon" />}
           placeholder="密码"
           className="auth-input"
+          autoComplete="current-password"
         />
       </Form.Item>
 
@@ -167,6 +152,7 @@ const Login = () => {
           prefix={<UserOutlined className="input-icon" />}
           placeholder="用户名"
           className="auth-input"
+          autoComplete="username"
         />
       </Form.Item>
 
@@ -181,6 +167,7 @@ const Login = () => {
           prefix={<MailOutlined className="input-icon" />}
           placeholder="邮箱"
           className="auth-input"
+          autoComplete="email"
         />
       </Form.Item>
 
@@ -195,6 +182,7 @@ const Login = () => {
           prefix={<LockOutlined className="input-icon" />}
           placeholder="密码（至少6位）"
           className="auth-input"
+          autoComplete="new-password"
         />
       </Form.Item>
 
@@ -217,6 +205,7 @@ const Login = () => {
           prefix={<CheckCircleOutlined className="input-icon" />}
           placeholder="确认密码"
           className="auth-input"
+          autoComplete="new-password"
         />
       </Form.Item>
 
@@ -260,26 +249,20 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {/* 动态背景层 */}
-      <div className="login-background">
-        <div className={`bg-gradient bg-gradient-${backgroundIndex}`} />
-        <div className="bg-pattern" />
-        <div className="floating-shapes">
-          <div className="shape shape-1" />
-          <div className="shape shape-2" />
-          <div className="shape shape-3" />
-          <div className="shape shape-4" />
-          <div className="shape shape-5" />
-          <div className="shape shape-6" />
-        </div>
+      {/* 主题控制器 */}
+      <div className="login-theme-controls">
+        <ColorThemeSelector placement="bottomLeft" />
+        <ThemeSwitcher placement="bottomLeft" />
       </div>
 
-      {/* 左侧品牌展示区 */}
-      <div className="login-brand">
-        <div className="brand-content">
+      {/* 简洁背景 */}
+      <div className="login-background" />
+
+      {/* 居中登录表单 */}
+      <div className="login-form-wrapper">
+        <div className="login-brand-header">
           <div className="brand-logo">
             <BookOutlined className="logo-icon" />
-            <div className="logo-shine" />
           </div>
           <Title level={1} className="brand-title">
             知识库管理平台
@@ -287,82 +270,17 @@ const Login = () => {
           <Text className="brand-subtitle">
             企业级文档管理与团队协作解决方案
           </Text>
-
-          <div className="feature-list">
-            <div className="feature-item">
-              <div className="feature-icon-wrapper">
-                <RocketOutlined className="feature-icon" />
-              </div>
-              <div className="feature-content">
-                <Text strong>极速搜索</Text>
-                <Text className="feature-desc">智能索引，毫秒响应</Text>
-              </div>
-            </div>
-            <div className="feature-item">
-              <div className="feature-icon-wrapper">
-                <SafetyOutlined className="feature-icon" />
-              </div>
-              <div className="feature-content">
-                <Text strong>安全可靠</Text>
-                <Text className="feature-desc">企业级加密保护</Text>
-              </div>
-            </div>
-            <div className="feature-item">
-              <div className="feature-icon-wrapper">
-                <TeamOutlined className="feature-icon" />
-              </div>
-              <div className="feature-content">
-                <Text strong>团队协作</Text>
-                <Text className="feature-desc">实时同步共享</Text>
-              </div>
-            </div>
-            <div className="feature-item">
-              <div className="feature-icon-wrapper">
-                <CloudOutlined className="feature-icon" />
-              </div>
-              <div className="feature-content">
-                <Text strong>云端存储</Text>
-                <Text className="feature-desc">随时随地访问</Text>
-              </div>
-            </div>
-          </div>
-
-          <div className="stats-row">
-            <div className="stat-item">
-              <div className="stat-number">10K+</div>
-              <div className="stat-label">活跃用户</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">50K+</div>
-              <div className="stat-label">文档数量</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">99.9%</div>
-              <div className="stat-label">稳定性</div>
-            </div>
-          </div>
-
-          <div className="brand-footer">
-            <Text className="copyright">© 2024 Knowledge Base Pro</Text>
-            <Text className="version">v2.0.0</Text>
-          </div>
         </div>
-      </div>
 
-      {/* 右侧登录表单区 */}
-      <div className="login-form-wrapper">
         <Card className="login-card" bordered={false}>
           <div className="login-header">
-            <div className="header-icon">
-              <ApiOutlined />
-            </div>
             <Title level={2} className="login-title">
-              {activeTab === 'login' ? '欢迎回来' : '创建账户'}
+              {activeTab === 'login' ? '登录' : '注册'}
             </Title>
             <Text className="login-subtitle">
               {activeTab === 'login'
-                ? '登录到您的账户继续'
-                : '注册新账户开始使用'}
+                ? '欢迎回来，请登录您的账户'
+                : '创建新账户开始使用'}
             </Text>
           </div>
 
@@ -373,34 +291,6 @@ const Login = () => {
             items={tabItems}
             centered
           />
-
-          <Divider className="social-divider">
-            <Text className="divider-text">或使用第三方登录</Text>
-          </Divider>
-
-          <div className="social-login">
-            <Button
-              className="social-btn github-btn"
-              icon={<GithubOutlined />}
-              disabled
-            >
-              GitHub
-            </Button>
-            <Button
-              className="social-btn google-btn"
-              icon={<GoogleOutlined />}
-              disabled
-            >
-              Google
-            </Button>
-            <Button
-              className="social-btn wechat-btn"
-              icon={<WechatOutlined />}
-              disabled
-            >
-              微信
-            </Button>
-          </div>
 
           <div className="login-footer">
             <Text type="secondary" className="footer-text">
@@ -415,11 +305,6 @@ const Login = () => {
                   <a onClick={() => setActiveTab('login')}> 立即登录</a>
                 </>
               )}
-            </Text>
-            <Text type="secondary" className="terms-text">
-              使用即表示您同意我们的
-              <Link to="/terms"> 服务条款</Link> 和
-              <Link to="/privacy"> 隐私政策</Link>
             </Text>
           </div>
         </Card>

@@ -1,0 +1,276 @@
+/* 主题切换器样式 */
+.theme-switcher-btn {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+}
+
+.theme-switcher-btn:hover {
+  background: var(--bg-hover) !important;
+  border-color: var(--border-hover) !important;
+  transform: translateY(-1px) !important;
+}
+
+.theme-switcher-btn:active {
+  transform: translateY(0) !important;
+}
+
+/* 主题图标样式 */
+.theme-icon {
+  font-size: 16px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.theme-icon-light {
+  color: #f59e0b !important;
+}
+
+.theme-icon-dark {
+  color: #6366f1 !important;
+}
+
+.theme-icon-system {
+  color: var(--text-secondary) !important;
+}
+
+/* 悬浮效果 */
+.theme-switcher-btn:hover .theme-icon {
+  transform: scale(1.1) !important;
+}
+
+.theme-switcher-btn:hover .theme-icon-light {
+  color: #d97706 !important;
+}
+
+.theme-switcher-btn:hover .theme-icon-dark {
+  color: #4f46e5 !important;
+}
+
+.theme-switcher-btn:hover .theme-icon-system {
+  color: var(--primary-color) !important;
+}
+
+/* 主题文本 */
+.theme-text {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: var(--text-primary) !important;
+  transition: color 0.3s ease !important;
+}
+
+/* 简单切换模式 */
+.simple-toggle {
+  position: relative !important;
+}
+
+.simple-toggle::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: var(--primary-color) !important;
+  border-radius: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  opacity: 0 !important;
+  z-index: -1 !important;
+}
+
+.simple-toggle:hover::after {
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0.1 !important;
+}
+
+/* 下拉菜单样式 */
+.theme-switcher-dropdown {
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-lg) !important;
+  border: 1px solid var(--border-color) !important;
+  overflow: hidden !important;
+}
+
+.theme-switcher-dropdown .ant-dropdown-menu {
+  background: var(--bg-card) !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 8px !important;
+}
+
+.theme-switcher-dropdown .ant-dropdown-menu-item {
+  border-radius: 8px !important;
+  margin-bottom: 4px !important;
+  padding: 12px 16px !important;
+  transition: all 0.2s ease !important;
+  border: 1px solid transparent !important;
+}
+
+.theme-switcher-dropdown .ant-dropdown-menu-item:last-child {
+  margin-bottom: 0 !important;
+}
+
+.theme-switcher-dropdown .ant-dropdown-menu-item:hover {
+  background: var(--bg-hover) !important;
+  border-color: var(--border-hover) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* 主题选项样式 */
+.theme-option {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  width: 100% !important;
+}
+
+.theme-option-main {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+}
+
+.theme-option-label {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: var(--text-primary) !important;
+  flex: 1 !important;
+}
+
+.theme-option-badge {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: var(--primary-color) !important;
+  background: var(--primary-color) !important;
+  background-opacity: 0.1 !important;
+  padding: 2px 8px !important;
+  border-radius: 12px !important;
+  border: 1px solid currentColor !important;
+  opacity: 0.8 !important;
+}
+
+.theme-option-description {
+  font-size: 12px !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.4 !important;
+}
+
+/* 菜单图标样式 */
+.menu-icon {
+  font-size: 16px !important;
+  color: var(--text-secondary) !important;
+  transition: all 0.2s ease !important;
+}
+
+.menu-icon.active {
+  color: var(--primary-color) !important;
+}
+
+/* 深色模式适配 */
+[data-theme="dark"] .theme-switcher-btn {
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+[data-theme="dark"] .theme-switcher-btn:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .theme-switcher-dropdown {
+  background: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .theme-option-badge {
+  background: rgba(20, 184, 166, 0.2) !important;
+  color: #14B8A6 !important;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .theme-switcher-btn {
+    padding: 6px 10px !important;
+  }
+
+  .theme-icon {
+    font-size: 14px !important;
+  }
+
+  .theme-text {
+    font-size: 13px !important;
+  }
+
+  .theme-switcher-dropdown .ant-dropdown-menu-item {
+    padding: 10px 14px !important;
+  }
+
+  .theme-option-label {
+    font-size: 13px !important;
+  }
+
+  .theme-option-description {
+    font-size: 11px !important;
+  }
+}
+
+/* 动画效果 */
+@keyframes themeSwitch {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(180deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+.theme-switcher-btn.switching .theme-icon {
+  animation: themeSwitch 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 工具提示样式增强 */
+.ant-tooltip-inner {
+  background: var(--tooltip-bg) !important;
+  color: var(--tooltip-text) !important;
+  border: 1px solid var(--tooltip-border) !important;
+  border-radius: 8px !important;
+  padding: 8px 12px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.ant-tooltip-arrow::before {
+  background: var(--tooltip-bg) !important;
+  border: 1px solid var(--tooltip-border) !important;
+}
+
+/* 访问性增强 */
+.theme-switcher-btn:focus-visible {
+  outline: 2px solid var(--primary-color) !important;
+  outline-offset: 2px !important;
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+  .theme-switcher-btn {
+    border: 2px solid var(--border-color) !important;
+  }
+
+  .theme-icon {
+    filter: contrast(1.2) !important;
+  }
+
+  .theme-option-label {
+    font-weight: 600 !important;
+  }
+}

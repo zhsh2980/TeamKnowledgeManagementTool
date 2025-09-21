@@ -1,0 +1,324 @@
+/* 配色主题选择器样式 */
+.color-theme-selector-btn {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+}
+
+.color-theme-selector-btn:hover {
+  background: var(--bg-hover) !important;
+  border-color: var(--border-hover) !important;
+  transform: translateY(-1px) !important;
+}
+
+.color-theme-selector-btn .anticon {
+  font-size: 16px !important;
+  color: var(--text-secondary) !important;
+  transition: all 0.3s ease !important;
+}
+
+.color-theme-selector-btn:hover .anticon {
+  color: var(--primary-color) !important;
+  transform: scale(1.1) !important;
+}
+
+/* 当前方案指示器 */
+.current-scheme-indicator {
+  display: flex !important;
+  align-items: center !important;
+  margin-left: 4px !important;
+}
+
+.scheme-dot {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  border: 2px solid var(--bg-card) !important;
+  box-shadow: 0 0 0 1px var(--border-color) !important;
+  transition: all 0.3s ease !important;
+}
+
+.color-theme-selector-btn:hover .scheme-dot {
+  transform: scale(1.2) !important;
+  box-shadow: 0 0 0 2px var(--primary-color) !important;
+}
+
+/* 下拉菜单容器 */
+.color-theme-selector-overlay {
+  z-index: 9999 !important;
+}
+
+.color-theme-dropdown {
+  width: 320px !important;
+  padding: 16px !important;
+  background: var(--bg-card) !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+/* 下拉菜单头部 */
+.dropdown-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 8px !important;
+}
+
+.dropdown-header h4 {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+  margin: 0 !important;
+}
+
+.current-scheme {
+  font-size: 12px !important;
+  color: var(--text-secondary) !important;
+  background: var(--bg-tertiary) !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+}
+
+/* 配色方案网格 */
+.schemes-grid {
+  max-height: 400px !important;
+  overflow-y: auto !important;
+}
+
+.schemes-grid::-webkit-scrollbar {
+  width: 4px !important;
+}
+
+.schemes-grid::-webkit-scrollbar-track {
+  background: var(--bg-tertiary) !important;
+  border-radius: 2px !important;
+}
+
+.schemes-grid::-webkit-scrollbar-thumb {
+  background: var(--border-color) !important;
+  border-radius: 2px !important;
+}
+
+/* 配色方案卡片 */
+.scheme-card {
+  position: relative !important;
+  border-radius: 8px !important;
+  border: 2px solid transparent !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  cursor: pointer !important;
+  background: var(--bg-secondary) !important;
+  height: 100% !important;
+}
+
+.scheme-card:hover {
+  border-color: var(--border-hover) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+.scheme-card.selected {
+  border-color: var(--primary-color) !important;
+  background: var(--primary-color) !important;
+  background-opacity: 0.05 !important;
+}
+
+.scheme-card.previewing {
+  border-color: var(--primary-color) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* 配色预览条 */
+.color-preview {
+  display: flex !important;
+  gap: 2px !important;
+  margin-bottom: 8px !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+  height: 24px !important;
+}
+
+.color-block {
+  flex: 1 !important;
+  height: 100% !important;
+  transition: all 0.3s ease !important;
+}
+
+.scheme-card:hover .color-block {
+  height: 28px !important;
+}
+
+/* 方案信息 */
+.scheme-info {
+  text-align: left !important;
+}
+
+.scheme-name {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+  margin-bottom: 4px !important;
+}
+
+.scheme-name .selected-icon {
+  color: var(--primary-color) !important;
+  font-size: 12px !important;
+  animation: checkmark 0.3s ease !important;
+}
+
+.scheme-description {
+  font-size: 11px !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.4 !important;
+}
+
+/* 预览指示器 */
+.preview-indicator {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  background: var(--primary-color) !important;
+  color: white !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  animation: fadeIn 0.2s ease !important;
+}
+
+.preview-indicator .anticon {
+  font-size: 10px !important;
+}
+
+/* 下拉菜单底部 */
+.dropdown-footer {
+  text-align: center !important;
+}
+
+.footer-tip {
+  font-size: 12px !important;
+  color: var(--text-tertiary) !important;
+  font-style: italic !important;
+}
+
+/* 深色模式适配 */
+[data-theme="dark"] .color-theme-selector-btn {
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+[data-theme="dark"] .color-theme-selector-btn:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .color-theme-dropdown {
+  background: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .scheme-card {
+  background: var(--bg-tertiary) !important;
+}
+
+[data-theme="dark"] .scheme-card.selected {
+  background: rgba(20, 184, 166, 0.1) !important;
+}
+
+[data-theme="dark"] .current-scheme {
+  background: var(--bg-quaternary) !important;
+  color: var(--text-tertiary) !important;
+}
+
+/* 动画效果 */
+@keyframes checkmark {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .color-theme-dropdown {
+    width: 280px !important;
+    padding: 12px !important;
+  }
+
+  .schemes-grid .ant-col {
+    span: 24 !important;
+  }
+
+  .scheme-card .ant-card-body {
+    padding: 8px !important;
+  }
+
+  .color-preview {
+    height: 20px !important;
+  }
+
+  .scheme-name {
+    font-size: 13px !important;
+  }
+
+  .scheme-description {
+    font-size: 10px !important;
+  }
+}
+
+/* 无障碍访问 */
+.color-theme-selector-btn:focus-visible {
+  outline: 2px solid var(--primary-color) !important;
+  outline-offset: 2px !important;
+}
+
+.scheme-card:focus-visible {
+  outline: 2px solid var(--primary-color) !important;
+  outline-offset: 2px !important;
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+  .scheme-card {
+    border-width: 3px !important;
+  }
+
+  .color-preview {
+    border: 1px solid var(--border-color) !important;
+  }
+
+  .scheme-name {
+    font-weight: 700 !important;
+  }
+}

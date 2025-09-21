@@ -1,0 +1,175 @@
+/* 深色模式 CSS 变量 */
+[data-theme="dark"] {
+  /* 品牌色 - 在深色模式下稍微调亮 */
+  --primary-color: #14B8A6;        /* 深邃青绿 - 亮化版 */
+  --primary-light: #2DD4BF;        /* 浅色 */
+  --primary-dark: #0D9488;         /* 深色 */
+  --primary-gradient: linear-gradient(135deg, #14B8A6 0%, #2DD4BF 100%);
+
+  /* 功能色 */
+  --success-color: #22C55E;
+  --warning-color: #EAB308;
+  --error-color: #EF4444;
+  --info-color: #06B6D4;
+
+  /* 背景色 */
+  --bg-primary: #0F172A;           /* 主背景 - 深蓝黑 */
+  --bg-secondary: #1E293B;         /* 次级背景 - 深蓝灰 */
+  --bg-tertiary: #334155;          /* 三级背景 - 中蓝灰 */
+  --bg-quaternary: #475569;        /* 四级背景 - 浅蓝灰 */
+  --bg-card: #1E293B;              /* 卡片背景 */
+  --bg-hover: rgba(255, 255, 255, 0.05); /* 悬浮背景 */
+  --bg-active: rgba(255, 255, 255, 0.1);  /* 激活背景 */
+
+  /* 文本颜色 */
+  --text-primary: #F1F5F9;         /* 主文本 - 浅灰白 */
+  --text-secondary: #CBD5E1;       /* 次级文本 - 中灰 */
+  --text-tertiary: #94A3B8;        /* 三级文本 - 深灰 */
+  --text-quaternary: #64748B;      /* 四级文本 - 最深灰 */
+  --text-inverse: #0F172A;         /* 反色文本 */
+  --text-link: #14B8A6;            /* 链接文本 */
+  --text-disabled: #475569;        /* 禁用文本 */
+
+  /* 边框颜色 */
+  --border-color: #334155;         /* 主边框 */
+  --border-light: #475569;         /* 浅边框 */
+  --border-dark: #1E293B;          /* 深边框 */
+  --border-hover: #64748B;         /* 悬浮边框 */
+  --border-focus: #14B8A6;         /* 焦点边框 */
+  --border-disabled: #374151;      /* 禁用边框 */
+
+  /* 阴影 */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-base: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4), 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.4), 0 10px 10px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.6);
+
+  /* 灰色调色板 */
+  --gray-50: #F8FAFC;
+  --gray-100: #F1F5F9;
+  --gray-200: #E2E8F0;
+  --gray-300: #CBD5E1;
+  --gray-400: #94A3B8;
+  --gray-500: #64748B;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1E293B;
+  --gray-900: #0F172A;
+
+  /* 特殊效果 */
+  --glass-bg: rgba(30, 41, 59, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --overlay-bg: rgba(15, 23, 42, 0.8);
+
+  /* 渐变效果 */
+  --gradient-card: linear-gradient(135deg,
+    rgba(30, 41, 59, 0.9) 0%,
+    rgba(51, 65, 85, 0.9) 100%);
+  --gradient-hover: linear-gradient(135deg,
+    rgba(51, 65, 85, 0.9) 0%,
+    rgba(71, 85, 105, 0.9) 100%);
+
+  /* 状态指示器 */
+  --status-online: #22C55E;
+  --status-offline: #64748B;
+  --status-busy: #EAB308;
+  --status-away: #F97316;
+
+  /* 代码块样式 */
+  --code-bg: #0F172A;
+  --code-text: #E2E8F0;
+  --code-keyword: #818CF8;
+  --code-string: #34D399;
+  --code-comment: #6B7280;
+  --code-number: #F472B6;
+
+  /* 滚动条样式 */
+  --scrollbar-track: #1E293B;
+  --scrollbar-thumb: #475569;
+  --scrollbar-thumb-hover: #64748B;
+
+  /* 输入框样式 */
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --input-border: #334155;
+  --input-focus-border: #14B8A6;
+  --input-focus-shadow: 0 0 0 2px rgba(20, 184, 166, 0.2);
+
+  /* 按钮样式 */
+  --btn-secondary-bg: #334155;
+  --btn-secondary-hover: #475569;
+  --btn-secondary-text: #F1F5F9;
+
+  /* 表格样式 */
+  --table-header-bg: #334155;
+  --table-row-hover: rgba(255, 255, 255, 0.03);
+  --table-border: #1E293B;
+
+  /* 标签样式 */
+  --tag-default-bg: #374151;
+  --tag-default-text: #D1D5DB;
+  --tag-primary-bg: rgba(20, 184, 166, 0.2);
+  --tag-primary-text: #14B8A6;
+
+  /* 通知样式 */
+  --notification-bg: #1E293B;
+  --notification-border: #334155;
+  --notification-success: #059669;
+  --notification-error: #DC2626;
+  --notification-warning: #D97706;
+  --notification-info: #0891B2;
+
+  /* 模态框样式 */
+  --modal-bg: #1E293B;
+  --modal-overlay: rgba(15, 23, 42, 0.8);
+  --modal-border: #334155;
+
+  /* 导航样式 */
+  --nav-bg: #1E293B;
+  --nav-item-hover: rgba(255, 255, 255, 0.05);
+  --nav-item-active: rgba(20, 184, 166, 0.1);
+  --nav-border: #334155;
+
+  /* 侧边栏样式 */
+  --sidebar-bg: #1E293B;
+  --sidebar-border: #334155;
+  --sidebar-item-hover: rgba(255, 255, 255, 0.05);
+  --sidebar-item-active: rgba(20, 184, 166, 0.1);
+
+  /* 分割线 */
+  --divider-color: #334155;
+  --divider-light: #475569;
+
+  /* 高亮色 */
+  --highlight-bg: rgba(20, 184, 166, 0.1);
+  --highlight-border: rgba(20, 184, 166, 0.3);
+
+  /* 禁用状态 */
+  --disabled-bg: #374151;
+  --disabled-text: #6B7280;
+  --disabled-border: #374151;
+
+  /* 选中状态 */
+  --selected-bg: rgba(20, 184, 166, 0.1);
+  --selected-border: #14B8A6;
+  --selected-text: #14B8A6;
+
+  /* 骨架屏 */
+  --skeleton-bg: linear-gradient(
+    90deg,
+    #1E293B 25%,
+    #334155 50%,
+    #1E293B 75%
+  );
+
+  /* 加载状态 */
+  --loading-bg: rgba(30, 41, 59, 0.8);
+  --loading-spinner: #14B8A6;
+
+  /* 工具提示 */
+  --tooltip-bg: #0F172A;
+  --tooltip-text: #F1F5F9;
+  --tooltip-border: #334155;
+}

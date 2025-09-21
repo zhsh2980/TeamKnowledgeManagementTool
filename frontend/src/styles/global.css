@@ -1,5 +1,9 @@
 /* 全局基础样式 */
 @import './variables.css';
+/* 导入深色主题变量 */
+@import './dark-variables.css';
+/* 导入动画系统 */
+@import './animations.css';
 
 /* 基础重置和全局样式 */
 * {

@@ -8,43 +8,6 @@
   overflow: hidden;
 }
 
-/* 主题控制器样式 - 更加低调 */
-.login-theme-controls {
-  position: fixed;
-  top: 24px;
-  right: 24px;
-  z-index: 1000;
-  display: flex;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-  border-radius: 8px;
-  padding: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
-}
-
-.login-theme-controls:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.login-theme-controls .color-theme-selector-btn,
-.login-theme-controls .theme-switcher-btn {
-  background: transparent !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  color: rgba(255, 255, 255, 0.8) !important;
-  padding: 6px 8px !important;
-  height: auto !important;
-  border-radius: 6px !important;
-}
-
-.login-theme-controls .color-theme-selector-btn:hover,
-.login-theme-controls .theme-switcher-btn:hover {
-  background: rgba(255, 255, 255, 0.15) !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
-  color: white !important;
-}
 
 /* 简洁背景 - 单色渐变 */
 .login-background {
@@ -297,13 +260,6 @@
 
 /* 响应式设计 */
 @media (max-width: 480px) {
-  .login-theme-controls {
-    top: 16px;
-    right: 16px;
-    padding: 6px;
-    gap: 6px;
-  }
-
   .login-form-wrapper {
     padding: 16px;
     max-width: 100%;

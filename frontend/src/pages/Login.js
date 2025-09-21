@@ -10,8 +10,6 @@ import {
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../services/api';
 import { saveAuth } from '../utils/auth';
-import ThemeSwitcher from '../components/ThemeSwitcher';
-import ColorThemeSelector from '../components/ColorThemeSelector';
 import './Login.css';
 
 const { Title, Text } = Typography;
@@ -249,12 +247,6 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {/* 主题控制器 */}
-      <div className="login-theme-controls">
-        <ColorThemeSelector placement="bottomLeft" />
-        <ThemeSwitcher placement="bottomLeft" />
-      </div>
-
       {/* 简洁背景 */}
       <div className="login-background" />
 
@@ -272,7 +264,7 @@ const Login = () => {
           </Text>
         </div>
 
-        <Card className="login-card" bordered={false}>
+        <Card className="login-card" variant="filled">
           <div className="login-header">
             <Title level={2} className="login-title">
               {activeTab === 'login' ? '登录' : '注册'}

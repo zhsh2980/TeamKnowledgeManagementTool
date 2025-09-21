@@ -141,11 +141,50 @@
   font-size: 20px !important;
 }
 
-.layout-sidebar.ant-layout-sider-collapsed .ant-menu-inline-collapsed > .ant-menu-item {
+/* 强化折叠状态下的菜单项居中样式 */
+.layout-sidebar.ant-layout-sider-collapsed .sidebar-menu .ant-menu-item {
+  padding: 0 !important;
+  text-align: center !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 64px !important;
+  margin: 4px 8px !important;
+}
+
+.layout-sidebar.ant-layout-sider-collapsed .sidebar-menu .ant-menu-item .ant-menu-item-icon {
+  margin: 0 auto !important;
   padding: 0 !important;
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
+  width: 100% !important;
+  font-size: 20px !important;
+}
+
+.layout-sidebar.ant-layout-sider-collapsed .sidebar-menu .ant-menu-item .ant-menu-title-content {
+  display: none !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  overflow: hidden !important;
+}
+
+/* 确保折叠状态下的选中项背景色正常 */
+.layout-sidebar.ant-layout-sider-collapsed .sidebar-menu .ant-menu-item-selected {
+  background: var(--primary-gradient) !important;
+}
+
+.layout-sidebar.ant-layout-sider-collapsed .sidebar-menu .ant-menu-item-selected .ant-menu-item-icon {
+  color: white !important;
+}
+
+/* 折叠状态下的悬停效果 */
+.layout-sidebar.ant-layout-sider-collapsed .sidebar-menu .ant-menu-item:hover {
+  background: var(--bg-hover) !important;
+}
+
+.layout-sidebar.ant-layout-sider-collapsed .sidebar-menu .ant-menu-item:hover .ant-menu-item-icon {
+  color: var(--primary-color) !important;
 }
 
 .sidebar-menu .ant-menu-divider {
